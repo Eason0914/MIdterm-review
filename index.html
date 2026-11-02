@@ -1,0 +1,1186 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>期中复习台</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Ma+Shan+Zheng&family=IBM+Plex+Mono:wght@400;600&family=Noto+Sans+SC:wght@400;500;700&display=swap">
+<style>
+/* Layout: a grid-paper notebook. Subject rail = washi-tape tabs, section tabs = index tabs, mistakes = sticky notes, key points = highlighter */
+:root{
+  --bg:#f7f1e3; --grid:#e6dcc4; --surface:#fffdf6; --sunk:#f1ead8; --ink:#2b2a33; --muted:#7a7263; --line:#d9cdb2;
+  --accent:#d0453b; --accent-soft:#fbe3dc; --mark:#fff176; --good:#3d8a4f; --good-soft:#e1f1dc; --bad:#c8453b; --bad-soft:#fde2dc;
+  --sticky-y:#fff3a3; --sticky-p:#ffd9de; --sticky-b:#d6ecff; --shadow:0 1px 0 rgba(80,60,20,.08),0 6px 14px -8px rgba(80,60,20,.35);
+  --t-chem:#f4a8b8; --t-eng:#c9c2e8; --t-phys:#a8d4f4; --t-hist:#f3cf8f; --t-bc:#b5e0b0; --t-csa:#f6b98f;
+  --hand:"Caveat","Ma Shan Zheng",cursive;
+  --display:"Caveat","Ma Shan Zheng",cursive;
+  --body:"Noto Sans SC","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+body{background-color:var(--bg);color:var(--ink);font:15px/1.75 var(--body);
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:24px 24px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.wrap{max-width:980px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+header.top .wrap{padding-block:26px 10px;display:flex;flex-wrap:wrap;gap:12px 24px;align-items:end;justify-content:space-between}
+h1{font:400 44px/1 var(--hand);margin:0;position:relative;display:inline-block}
+h1::after{content:"";position:absolute;left:-4px;right:-6px;bottom:2px;height:14px;background:var(--mark);z-index:-1;transform:rotate(-1deg);border-radius:3px}
+header.top h1{z-index:0}
+.sub{color:var(--muted);font-size:13px;margin-top:8px}
+.next{font-family:var(--mono);font-size:12.5px;text-align:right;background:var(--surface);padding:8px 14px;border-radius:4px;box-shadow:var(--shadow);transform:rotate(1deg);border-top:10px solid var(--t-chem)}
+.next b{display:block;font:700 30px/1.15 var(--display);color:var(--accent);font-variant-numeric:tabular-nums}
+nav.rail{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);box-shadow:0 1px 0 var(--line)}
+nav.rail .wrap{display:flex;gap:8px;overflow-x:auto;padding-block:12px 10px;scrollbar-width:none}
+.subj{flex:0 0 auto;border:0;background:var(--surface);color:var(--ink);border-radius:2px;padding:6px 14px 6px;font:500 14px/1.3 var(--body);cursor:pointer;text-align:left;box-shadow:var(--shadow);position:relative;border-top:8px solid var(--tape,var(--line));transition:transform .15s}
+.subj small{display:block;font:400 11px/1.3 var(--mono);color:var(--muted)}
+.subj[data-id="chem"]{--tape:var(--t-chem)} .subj[data-id="eng"]{--tape:var(--t-eng)} .subj[data-id="phys"]{--tape:var(--t-phys)}
+.subj[data-id="hist"]{--tape:var(--t-hist)} .subj[data-id="bc"]{--tape:var(--t-bc)} .subj[data-id="csa"]{--tape:var(--t-csa)}
+.subj[aria-current="true"]{transform:translateY(-3px) rotate(-1.5deg);background:var(--tape);font-weight:700}
+.subj[aria-current="true"] small{color:var(--ink)}
+.subj.todo{opacity:.65}
+.subj:focus-visible,.tab:focus-visible,button:focus-visible{outline:2px dashed var(--accent);outline-offset:2px}
+main .wrap{padding-block:22px 64px}
+#desk{background:var(--surface);box-shadow:var(--shadow);border-radius:3px;padding:26px clamp(16px,4vw,40px) 36px;position:relative;
+  background-image:linear-gradient(90deg,transparent 0,transparent 30px,var(--accent-soft) 30px,var(--accent-soft) 32px,transparent 32px)}
+.deskhead{display:flex;flex-wrap:wrap;gap:4px 20px;align-items:baseline;justify-content:space-between;margin-bottom:4px}
+h2{font:400 36px/1.15 var(--hand);margin:0}
+.meta{font-family:var(--mono);font-size:12.5px;color:var(--muted)}
+.meta .warn{background:linear-gradient(100deg,transparent 2%,var(--mark) 4%,var(--mark) 96%,transparent 98%);color:var(--ink);padding:0 4px}
+.scope{color:var(--muted);margin:6px 0 14px;max-width:70ch}
+.progress{height:8px;background:var(--sunk);border-radius:6px;overflow:hidden;margin:0 0 20px;border:1px dashed var(--line)}
+.progress i{display:block;height:100%;background:repeating-linear-gradient(45deg,var(--good) 0 6px,var(--good-soft) 6px 9px);width:0;transition:width .3s}
+.tabs{display:flex;gap:6px;border-bottom:2px solid var(--ink);margin-bottom:24px;overflow-x:auto;padding-top:4px}
+.tab{border:2px solid var(--ink);border-bottom:0;background:var(--sunk);color:var(--muted);font:400 22px/1 var(--display);padding:7px 16px 5px;cursor:pointer;border-radius:8px 8px 0 0;white-space:nowrap}
+.tab[aria-selected="true"]{background:var(--sticky-y);color:var(--ink)}
+.tab .n{font:400 11px var(--mono);color:var(--muted);margin-left:4px}
+section.panel{display:grid;gap:30px}
+h3{font:400 26px/1.2 var(--hand);margin:0 0 10px;text-wrap:balance}
+h4{font:700 15px var(--body);margin:16px 0 6px;display:inline-block;border-bottom:2px wavy var(--accent);line-height:1.4}
+p{margin:0 0 8px}
+ul,ol{margin:0 0 8px;padding-left:1.3em}
+li{margin:3px 0}
+li::marker{color:var(--accent)}
+.tbl{overflow-x:auto;border:1.5px solid var(--ink);border-radius:4px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{padding:8px 12px;border-bottom:1px dashed var(--line);text-align:left;vertical-align:top}
+th{background:var(--sunk);font-weight:700;font-size:12.5px;color:var(--ink);white-space:nowrap;border-bottom:1.5px solid var(--ink)}
+tr:last-child td{border-bottom:0}
+td:nth-child(3),td:nth-child(4){white-space:nowrap}
+td.why{white-space:nowrap;font:400 20px/1.2 var(--display);color:var(--accent)}
+code,.m{font-family:var(--mono);font-size:.92em;background:var(--sunk);padding:1px 5px;border-radius:3px}
+.eq{font-family:var(--mono);background:var(--sticky-b);border-radius:2px;padding:12px 16px;margin:10px 0;overflow-x:auto;white-space:nowrap;box-shadow:var(--shadow)}
+.note,.alert{border-radius:2px;padding:14px 16px;box-shadow:var(--shadow);position:relative}
+.note{background:var(--sticky-y)}
+.alert{background:var(--sticky-p)}
+.grid2 .note:nth-child(odd),.grid2 .alert:nth-child(odd){transform:rotate(-.8deg)}
+.grid2 .note:nth-child(even),.grid2 .alert:nth-child(even){transform:rotate(.7deg)}
+.note::before,.alert::before{content:"";position:absolute;top:-9px;left:50%;width:64px;height:18px;margin-left:-32px;background:var(--t-hist);opacity:.75;transform:rotate(-3deg)}
+mark{background:linear-gradient(100deg,transparent 1%,var(--mark) 3%,var(--mark) 97%,transparent 99%);color:inherit;padding:0 3px}
+details{border:0;border-radius:0;background:transparent}
+details>summary{cursor:pointer;padding:6px 0;font:400 26px/1.3 var(--hand);list-style:none;display:flex;justify-content:space-between;gap:12px;border-bottom:2px solid var(--ink)}
+details>summary::-webkit-details-marker{display:none}
+details>summary::after{content:"+";font:400 26px var(--display);color:var(--accent)}
+details[open]>summary::after{content:"−"}
+details>.body{padding:12px 0 6px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-family:var(--mono);font-size:13px;background:var(--sticky-b);border-radius:2px;padding:2px 8px;box-shadow:var(--shadow)}
+.qhead{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+.score{font:400 22px var(--display)}
+.btn{border:1.5px solid var(--ink);background:var(--surface);color:var(--ink);border-radius:999px;padding:3px 14px;font:500 13px var(--body);cursor:pointer;box-shadow:2px 2px 0 var(--ink)}
+.btn:hover{transform:translate(-1px,-1px);box-shadow:3px 3px 0 var(--ink)}
+.btn:active{transform:translate(1px,1px);box-shadow:1px 1px 0 var(--ink)}
+.q{display:grid;grid-template-columns:2.4em 1fr;gap:4px 10px;padding:14px 16px;border-bottom:1px dashed var(--line);position:relative}
+.q .num{font:400 26px/1.1 var(--display);color:var(--accent)}
+.q.ok .num::after{content:" ✓";color:var(--good)} .q.no .num::after{content:" ✗";color:var(--bad)}
+.q.no{background:linear-gradient(90deg,var(--bad-soft),transparent 70%)}
+.q .ctl{grid-column:2;display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.q .ans{grid-column:2;background:var(--sticky-y);border-radius:2px;padding:8px 12px;margin-top:6px;box-shadow:var(--shadow);transform:rotate(-.4deg)}
+.btn.okb[aria-pressed="true"]{background:var(--good-soft);border-color:var(--good);color:var(--good);box-shadow:2px 2px 0 var(--good)}
+.btn.nob[aria-pressed="true"]{background:var(--bad-soft);border-color:var(--bad);color:var(--bad);box-shadow:2px 2px 0 var(--bad)}
+.qlist{display:grid;gap:0}
+.check{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px dashed var(--line)}
+.check:last-child{border-bottom:0}
+.check input{width:18px;height:18px;margin-top:4px;accent-color:var(--good);flex:0 0 auto}
+.check label{cursor:pointer}
+.check input:checked+label{color:var(--muted);text-decoration:line-through wavy var(--accent)}
+.check .t{font-family:var(--mono);font-size:12px;color:var(--muted);margin-left:6px}
+.day{background:var(--surface);border:1.5px solid var(--ink);border-radius:4px;padding:12px 16px;box-shadow:3px 3px 0 var(--line)}
+.day h4{margin-top:0;display:flex;gap:8px;align-items:center;border:0;font:400 24px var(--hand)}
+.today{font:600 11px var(--mono);background:var(--accent);color:var(--surface);border-radius:2px;padding:1px 6px;transform:rotate(-4deg)}
+.empty{border:2px dashed var(--line);border-radius:4px;padding:32px;text-align:center;color:var(--muted)}
+.empty b{display:block;color:var(--ink);font:400 30px var(--hand);margin-bottom:6px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px}
+.grid2>*{min-width:0}
+@media (max-width:520px){h1{font-size:36px}.next{transform:none}}
+/* mock exam */
+.mockbar{position:sticky;top:calc(env(safe-area-inset-top,0px) + 66px);z-index:3;display:flex;flex-wrap:wrap;gap:10px 20px;align-items:center;justify-content:space-between;background:var(--sticky-y);padding:10px 16px;box-shadow:var(--shadow);border-radius:2px}
+.clock{font:700 34px/1 var(--display);font-variant-numeric:tabular-nums}
+.clock.over{color:var(--bad)}
+.result b{font:700 30px/1 var(--display);color:var(--accent);margin-right:10px}
+.mq .stem{min-width:0}
+.opts{grid-column:2;display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:6px;margin-top:8px}
+.opt{display:flex;gap:8px;align-items:center;text-align:left;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);border-radius:6px;padding:6px 10px;font:14px var(--body);cursor:pointer;min-width:0}
+.opt:hover:not(:disabled){border-color:var(--ink)}
+.opt .let{font:700 18px/1 var(--display);color:var(--muted);flex:0 0 auto}
+.opt.sel{border-color:var(--ink);background:var(--sticky-b)}
+.opt.sel .let{color:var(--ink)}
+.opt.right{border-color:var(--good);background:var(--good-soft)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-soft);text-decoration:line-through}
+.opt:disabled{cursor:default}
+.fig{margin:6px 0 10px;overflow-x:auto}
+.frq{display:grid;gap:8px}
+mjx-container:not([display="true"]){display:inline-block;vertical-align:middle;padding-block:2px}
+mjx-container{position:relative;max-width:100%;overflow-x:auto;overflow-y:hidden}
+mjx-container[display="true"]{margin:.4em 0!important}
+.stem .tbl{margin:4px 0 8px}
+section.panel>*,.qlist>*{min-width:0}
+code{overflow-wrap:anywhere}
+pre.code{font-family:var(--mono);font-size:13px;line-height:1.5;background:var(--sunk);border-left:3px solid var(--accent);padding:10px 14px;margin:8px 0;overflow-x:auto;border-radius:2px}
+.q code{white-space:normal;word-break:break-word}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<header class="top"><div class="wrap">
+  <div><h1>期中复习台</h1><div class="sub">2026 第一学期期中 · 10.7 班 · 11 月 3 日 – 6 日</div></div>
+  <div class="next" id="next"></div>
+</div></header>
+<nav class="rail" aria-label="科目"><div class="wrap" id="rail"></div></nav>
+<main><div class="wrap" id="desk"></div></main>
+
+<script>
+const EXAMS=[
+ {id:"chem",name:"AP Chemistry",short:"化学",start:"2026-11-03T09:00:00+08:00",end:"10:30",room:"412",note:"",ready:true},
+ {id:"eng",name:"Pre-AP English 2",short:"English",start:"2026-11-03T13:30:00+08:00",end:"14:30",room:"414",note:"13:30 开始",ready:false,msg:"还没有复习资料。上传后加入。"},
+ {id:"phys",name:"AP Physics C: Mechanics",short:"物理 C",start:"2026-11-04T09:00:00+08:00",end:"10:30",room:"412",note:"考场 412（平时在 413）",ready:false,msg:"资料已在项目里，下一步加入。"},
+ {id:"hist",name:"AP World History",short:"历史",start:"2026-11-05T09:00:00+08:00",end:"10:30",room:"414",note:"",ready:true,msg:"资料已收到，下一步加入。"},
+ {id:"bc",name:"AP Calculus BC",short:"BC",start:"2026-11-06T09:00:00+08:00",end:"10:30",room:"417",note:"考场 417（平时在 412）",ready:true,msg:"复习资料和模拟卷已在项目里，之后加入，含可作答的模拟考。"},
+ {id:"csa",name:"AP Computer Science A",short:"CSA",start:"2026-11-06T12:30:00+08:00",end:"14:00",room:"414",note:"12:30 开始",ready:true,msg:"资料已在项目里，下一步加入。"}
+];
+const WD=["周日","周一","周二","周三","周四","周五","周六"];
+function fmtDate(e){const d=new Date(e.start);const p=new Intl.DateTimeFormat("zh-CN",{timeZone:"Asia/Shanghai",month:"numeric",day:"numeric",weekday:"short",hour:"2-digit",minute:"2-digit",hour12:false}).formatToParts(d);const g=t=>p.find(x=>x.type===t)?.value;return `${g("month")}/${g("day")} ${g("weekday")} ${g("hour")}:${g("minute")}–${e.end}`}
+function left(ms){if(ms<=0)return "已开考";const h=Math.floor(ms/36e5),m=Math.floor(ms%36e5/6e4);return h>=24?`${Math.floor(h/24)} 天 ${h%24} 小时`:`${h} 小时 ${m} 分`}
+
+/* storage, always guarded */
+const store={get(k,d){try{const v=localStorage.getItem("mt:"+k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem("mt:"+k,JSON.stringify(v))}catch(e){}}};
+
+/* ===================== CHEMISTRY CONTENT ===================== */
+const CHEM={
+scope:"范围：Ch7 周期性规律（7.2–7.6）+ Ch8 Lewis 结构（8.1–8.5, 8.8）。Mid-term Review 里混了 Ch6 电子排布和 Ch2 命名，当保分题。Ch9 VSEPR 不是重点。建议顺序：错题 → Ch7 答题模板 → Ch8 → Ch6/Ch2。",
+mistakes:`
+<div>
+<h3>Mid-term Review 选择题（44/50）</h3>
+<p class="scope" style="margin:0 0 10px">错的几乎全是 Ch8 概念题。规律：遇到 polar / nonpolar、δ⁻、formal charge，<mark>先写出电负性数值再选</mark>；题干出现 reverse / per mole of X 时圈出来。红色 = 你选的，绿色 = 正确答案。</p>
+<div class="qlist">
+<div class="q no"><div class="num">4</div><div class="stem">Which of the following bonds would be considered <b>non-polar covalent</b>?</div>
+<div class="opts"><div class="opt"><span class="let">A</span><span>N–H</span></div><div class="opt right"><span class="let">B</span><span>C–H</span></div><div class="opt wrong"><span class="let">C</span><span>O–H</span></div><div class="opt"><span class="let">D</span><span>C–Cl</span></div><div class="opt"><span class="let">E</span><span>C–O</span></div></div>
+<div class="ans">ΔEN：N–H 0.9，<b>C–H 0.4</b>，O–H 1.4，C–Cl 0.5，C–O 1.0。C–H 最小，算 nonpolar。O–H 是这几个里<b>最极性</b>的，正好选反了。</div></div>
+
+<div class="q no"><div class="num">13</div><div class="stem">Why don't we draw double bonds between the Be atom and the Cl atoms in BeCl₂?</div>
+<div class="opts" style="grid-template-columns:1fr">
+<div class="opt right"><span class="let">A</span><span>That would give positive formal charges to the chlorine atoms and a negative formal charge to the beryllium atom.</span></div>
+<div class="opt wrong"><span class="let">B</span><span>There aren't enough electrons.</span></div>
+<div class="opt"><span class="let">C</span><span>That would result in more than eight electrons around beryllium.</span></div>
+<div class="opt"><span class="let">D</span><span>That would result in more than eight electrons around each chlorine atom.</span></div>
+<div class="opt"><span class="let">E</span><span>That would result in the formal charges not adding up to zero.</span></div></div>
+<div class="ans">电子够用：2 + 7 × 2 = 16 e⁻。画成 Cl=Be=Cl 后 Cl 带 +1、Be 带 −2，负电荷落在电负性小的 Be 上，不合理。C 也不对：两个双键时 Be 周围正好 8 个电子，不超过。</div></div>
+
+<div class="q no"><div class="num">22</div><div class="stem">In the molecule below, which atom has the <b>largest partial negative charge</b>?
+<pre class="m" style="display:inline-block;line-height:1.3;margin:6px 0;padding:6px 12px">     Cl
+     |
+F —  C — Br
+     |
+     I</pre></div>
+<div class="opts"><div class="opt"><span class="let">A</span><span>Cl</span></div><div class="opt right"><span class="let">B</span><span>F</span></div><div class="opt"><span class="let">C</span><span>Br</span></div><div class="opt wrong"><span class="let">D</span><span>I</span></div><div class="opt"><span class="let">E</span><span>C</span></div></div>
+<div class="ans">δ⁻ 看电负性：F 4.0 &gt; Cl 3.0 &gt; Br 2.8 &gt; I 2.5（≈ C 2.5）。I 是卤素里最<b>小</b>的，几乎不带 δ⁻。</div></div>
+
+<div class="q no"><div class="num">26</div><div class="stem">A nonpolar bond will form between two ______ atoms of ______ electronegativity.</div>
+<div class="opts"><div class="opt"><span class="let">A</span><span>different, opposite</span></div><div class="opt"><span class="let">B</span><span>identical, different</span></div><div class="opt wrong"><span class="let">C</span><span>different, different</span></div><div class="opt"><span class="let">D</span><span>similar, different</span></div><div class="opt right"><span class="let">E</span><span>identical, equal</span></div></div>
+<div class="ans">nonpolar = ΔEN = 0 → 两个相同原子、电负性相等，电子均匀共享（如 H–H、Cl–Cl）。“different, different” 描述的是 polar bond。</div></div>
+
+<div class="q no"><div class="num">35</div><div class="stem">Using the table of bond dissociation energies, the ΔH for the <mark>reverse</mark> of the following gas-phase reaction is ______ kJ.
+<div class="eq">H₂C=CH₂ + H–Br → H₃C–CH₂Br</div>
+<div class="chips"><span class="chip">C–C 348</span><span class="chip">C=C 614</span><span class="chip">C–H 413</span><span class="chip">H–Br 366</span><span class="chip">C–Br 276</span></div></div>
+<div class="opts"><div class="opt right"><span class="let">A</span><span>+57</span></div><div class="opt"><span class="let">B</span><span>+291</span></div><div class="opt"><span class="let">C</span><span>2017</span></div><div class="opt wrong"><span class="let">D</span><span>−57</span></div><div class="opt"><span class="let">E</span><span>−291</span></div></div>
+<div class="ans">正反应：断 C=C 614 + H–Br 366 = 980；成 C–C 348 + C–H 413 + C–Br 276 = 1037。ΔH = 980 − 1037 = −57。你算对了正反应，但题目问 <b>reverse</b>，要变号 → +57。</div></div>
+
+<div class="q no"><div class="num">40</div><div class="stem">Of the following, ______ cannot accommodate more than an octet of electrons.</div>
+<div class="opts"><div class="opt"><span class="let">A</span><span>Ni</span></div><div class="opt"><span class="let">B</span><span>Sc</span></div><div class="opt right"><span class="let">C</span><span>Be</span></div><div class="opt"><span class="let">D</span><span>Os</span></div><div class="opt"><span class="let">E</span><span>Sb</span></div></div>
+<div class="ans">（复习资料记为空着没得分）Be 在第 2 周期，只有 n = 2 的 4 个轨道（2s + 3 × 2p），最多 8 个电子。Ni、Sc、Os、Sb 都在第 4 周期以后，有 d 轨道可用。</div></div>
+</div>
+</div>
+<div>
+<h3>FRQ 失分点</h3>
+<div class="qlist">
+<div class="q no"><div class="num">1d</div><div class="stem"><i>Why the 1st ionization energy of Al is larger than that of Mg?</i></div>
+<div class="ans" style="background:var(--sticky-p)"><b>你写的：</b>Al Zeff &gt; Mg, more attraction, harder to remove e⁻, greater I₁</div>
+<div class="ans"><b>问题：</b>题目前提是反的。事实是 IE₁(Mg) 738 &gt; IE₁(Al) 578。Zeff 解释不了这个例外。<br><b>正确答法：</b>Al 失去的是 3p¹ 电子，能量比 3s 高、被 3s 屏蔽；3s²3p¹ 不如 3s² 稳定 → 更容易移去，所以 IE₁(Al) 更<b>小</b>。考试再出，先指出前提错了，再解释。</div></div>
+
+<div class="q no"><div class="num">1c</div><div class="stem"><i>Explain why the radius of Mg is larger than Al?</i></div>
+<div class="ans" style="background:var(--sticky-p)"><b>你写的：</b>Zeff = Z − S, Zeff for Mg &lt; Al, less attraction, larger radius.</div>
+<div class="ans"><b>补一句：</b>Same period, same number of shells, S barely changes; Z increases → Zeff increases。先说为什么 Zeff 变大，再接你的因果链。</div></div>
+
+<div class="q no"><div class="num">2c</div><div class="stem"><i>Write down the complete electron configuration and draw the orbital diagram for Ga.</i></div>
+<div class="ans" style="background:var(--sticky-p)"><b>你写的：</b>1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d⁸（旁边写了 28）</div>
+<div class="ans"><b>正确：</b>Ga Z = 31：<span class="m">1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p¹</span>。3d 要填满 10 个，再填 4p¹。写完数一遍上标之和 = 31。</div></div>
+
+<div class="q no"><div class="num">4</div><div class="stem"><i>A(g) + A(g) → A⁺(g) + A⁻(g). In terms of the ionization energy and electron affinity of atom A, what is the energy change for this reaction? For chlorine, is this process exothermic? For sodium?</i></div>
+<div class="ans" style="background:var(--sticky-p)"><b>你写的：</b>ΔH = IE − EA；for Cl and Na, both IE &gt; EA, ΔH &gt; 0, endothermic.</div>
+<div class="ans"><b>符号约定：</b>按课本（EA 带负号）写 ΔE = IE₁ + EA。Cl：1251 + (−349) = +902 kJ/mol；Na：496 + (−53) = +443 kJ/mol，都吸热。写 IE − EA 只在 EA 取绝对值时成立，要写明。结论你是对的。</div></div>
+</div>
+</div>
+<div>
+<h3>资料里的错，别照着背</h3>
+<ul>
+<li><b>codex md 说第 1 题选 B，错。</b>老师定义：lattice energy = 把 1 mol 离子固体完全分离成气态离子所需能量，吸热，NaCl = +788 kJ/mol。答案 A，你做对了。</li>
+<li>答案卷 NH₄Cl 写成 “ammonia chloride”，应为 <b>ammonium chloride</b>。</li>
+<li>答案卷 KO₂ 留空：它是 salt（K⁺ 和 O₂⁻ superoxide）。</li>
+</ul>
+</div>
+<div>
+<h3>考场检查清单</h3>
+<div class="day">
+<div class="check"><input type="checkbox" id="chem-ex-1" disabled checked><label for="chem-ex-1" style="text-decoration:none;color:inherit">解释题写全：shells / Zeff / stability → attraction → 结论</label></div>
+<div class="check"><input type="checkbox" id="chem-ex-2" disabled checked><label for="chem-ex-2" style="text-decoration:none;color:inherit">Lewis：总电子数、FC 之和 = 电荷、离子加 [ ] 和电荷</label></div>
+<div class="check"><input type="checkbox" id="chem-ex-3" disabled checked><label for="chem-ex-3" style="text-decoration:none;color:inherit">电离方程标 (g)；过渡金属先失 4s</label></div>
+<div class="check"><input type="checkbox" id="chem-ex-4" disabled checked><label for="chem-ex-4" style="text-decoration:none;color:inherit">ΔH：写算式、带单位、看是否 reverse</label></div>
+</div>
+</div>`,
+ref:`
+<details open><summary>Ch7 周期性规律：老师的答题模板</summary><div class="body">
+<p class="note">每个解释题只用三种理由之一：<b>shells</b>（电子层数 n）、<b>Zeff = Z − S</b>、<b>stability</b>（轨道稳定性）。先判断用哪种，再写完整因果链：理由 → attraction 变化 → R / IE 变化。</p>
+<h4>半径 Radius</h4>
+<div class="tbl"><table>
+<tr><th>情形</th><th>理由</th><th>标准答句</th></tr>
+<tr><td>同周期 左 → 右</td><td class="why">Zeff</td><td>Same n, S barely changes, Z increases → Zeff increases → stronger attraction → R decreases</td></tr>
+<tr><td>同族 上 → 下</td><td class="why">shells</td><td>n increases → valence shell farther from nucleus → weaker attraction → R increases</td></tr>
+<tr><td>等电子体</td><td class="why">Zeff</td><td>Same electrons so S same, Z increases → Zeff increases → R decreases<br><span class="m">N³⁻ &gt; O²⁻ &gt; F⁻ &gt; Ne &gt; Na⁺ &gt; Mg²⁺ &gt; Al³⁺</span></td></tr>
+<tr><td>阳离子 vs 原子</td><td class="why">shells + Zeff</td><td>失去整个价层 → 少一层；且 Z 不变、S 减小 → Zeff 增大 → cation 更小</td></tr>
+<tr><td>阴离子 vs 原子</td><td class="why">Zeff</td><td>Z 不变、加电子使 S 增大 → Zeff 减小 → anion 更大</td></tr>
+</table></div>
+<p style="margin-top:8px">同元素不同电荷：Fe &gt; Fe²⁺ &gt; Fe³⁺；Pb &gt; Pb²⁺ &gt; Pb⁴⁺。正电荷越高越小。</p>
+<h4>电离能 Ionization Energy</h4>
+<div class="tbl"><table>
+<tr><th>问题</th><th>理由</th><th>标准答句</th></tr>
+<tr><td>同周期 IE₁ 增大</td><td class="why">Zeff</td><td>Zeff increases → harder to ionize → IE increases</td></tr>
+<tr><td>同族 IE₁ 减小</td><td class="why">shells</td><td>n increases → farther, weaker attraction → easier to ionize</td></tr>
+<tr><td>IE₁ &lt; IE₂ &lt; IE₃</td><td class="why">Zeff</td><td>Z 不变，每失一个电子 S 减小（e⁻–e⁻ repulsion 减小）→ Zeff 增大；离子越来越正</td></tr>
+<tr><td>价电子 IE ≪ 内层 IE（突跃）</td><td class="why">stability</td><td>开始移去 core electron，内层更靠核、更稳定 → 能量急剧上升。<mark>突跃前移去几个 = 价电子数</mark></td></tr>
+<tr><td>IE(3A) &lt; IE(2A)，Al &lt; Mg</td><td class="why">stability</td><td>ns²np¹ 不如 ns² 稳定，np¹ 电子能量更高、更易失去</td></tr>
+<tr><td>IE(6A) &lt; IE(5A)，O &lt; N</td><td class="why">stability</td><td>ns²np³ 半满更稳定；np⁴ 有一对成对电子，排斥使其中一个更易失去</td></tr>
+</table></div>
+<ul style="margin-top:8px">
+<li>Al 逐级电离：IE₁→IE₃ 稳步增大，IE₃→IE₄ 突跃（第 4 个是 2p core electron）。第 4 电离方程 <span class="m">Al³⁺(g) → Al⁴⁺(g) + e⁻</span>，一定标 (g)。</li>
+<li>第二电离能最大的是碱金属（Na 的第 2 个就是 core electron），题 47。</li>
+</ul>
+<h4>其他趋势</h4>
+<ul>
+<li><b>Electron affinity</b>：右上更负（更放热），卤素最负；稀有气体、Group 2、N 例外。</li>
+<li><b>Electronegativity</b>：左→右增大、上→下减小，F 最大（题 25）。</li>
+<li><b>Metallic character</b>：左下最强（Cs）。金属性差别最小 = 位置最近，如 Na 和 Mg。</li>
+<li><b>Oxides</b>：金属氧化物碱性；非金属氧化物酸性（acid anhydride：CO₂、SO₃、NₓOᵧ）。</li>
+</ul>
+</div></details>
+
+<details open><summary>Ch8 离子键、键极性</summary><div class="body">
+<h4>Lattice energy</h4>
+<p>定义：把 1 mol 离子固体完全分离成气态离子所需能量，正值。<span class="m">NaCl(s) → Na⁺(g) + Cl⁻(g)　ΔH = +788 kJ/mol</span></p>
+<div class="eq">E_el = κ·Q₁·Q₂ / d　　电荷越大、离子越小（d 越小）→ lattice energy 越大</div>
+<p>先比电荷，再比半径：<span class="m">MgO (3795) ≫ NaF (910) &gt; NaCl (788) &gt; NaBr (732)</span></p>
+<p>金属 + 非金属 → ionic；只有非金属 → covalent。NH₄Cl 既有离子键又有共价键。</p>
+<h4>键的极性</h4>
+<p>ΔEN = 0 → nonpolar；ΔEN 越大越极性；电负性大的一端是 δ⁻。</p>
+<div class="chips"><span class="chip">F 4.0</span><span class="chip">O 3.5</span><span class="chip">N 3.0</span><span class="chip">Cl 3.0</span><span class="chip">C 2.5</span><span class="chip">S 2.5</span><span class="chip">H 2.1</span></div>
+<p style="margin-top:8px">C–H（0.4）几乎非极性；N–O（0.5）是题 37 里极性最弱的。</p>
+</div></details>
+
+<details open><summary>Ch8 Lewis 结构、形式电荷、共振</summary><div class="body">
+<p class="note">老师的 “BEST Lewis structure” = <b>形式电荷最小</b>的结构；第 3 周期及以后的中心原子允许 expanded octet。题干写 “without violating the octet rule” 时才强制八隅。</p>
+<h4>画法（老师 Method II）</h4>
+<ol>
+<li>数总价电子：负电荷加、正电荷减。</li>
+<li>用单键连出 ABₙ 骨架（H 和 F 永远在端点，电负性小的当中心）。</li>
+<li>剩余电子先给周围原子 B 满八隅。</li>
+<li>还有剩的放中心原子 A。</li>
+<li>A 不满八隅 → 把 B 的孤对移成 π 键；等价位置都能移 → 画 resonance。</li>
+<li>检查：总电子数、FC 之和 = 括号外电荷、离子加 [ ] 和电荷。</li>
+</ol>
+<h4>常考电子数</h4>
+<div class="chips"><span class="chip">NO₂⁻ 18</span><span class="chip">NO⁻ 12</span><span class="chip">NO₃⁻ 24</span><span class="chip">CO₃²⁻ 24</span><span class="chip">SO₄²⁻ 32</span><span class="chip">PO₄³⁻ 32</span><span class="chip">CH₃Cl 14</span></div>
+<h4>形式电荷</h4>
+<div class="eq">FC = V − N(nonbonding) − ½·B(bonding)</div>
+<p>最佳结构：① 各原子 FC 最接近 0；② 负 FC 落在电负性大的原子上。例 NCS⁻：<span class="m">[N=C=S]⁻</span>（−1, 0, 0）最佳。</p>
+<p>NO₃⁻ 中 N 的 FC = +1；两个 S=O 的 SO₄²⁻ 中 S 的 FC = 0。</p>
+<h4>Resonance</h4>
+<ul>
+<li>共振式之间只移动电子，不移动原子；差别是 electron placement。</li>
+<li>真实结构是 hybrid：SO₂ 每根键 1.5 级，SO₃ / CO₃²⁻ 每根 1.33 级，键长相等。</li>
+<li>两个等价共振：NO₂⁻、O₃、SO₂。三个：NO₃⁻、CO₃²⁻、SO₃；按 FC 最小画法，SO₃²⁻ 和 BrO₃⁻ 也是三个（题 10）。</li>
+</ul>
+<h4>八隅例外</h4>
+<div class="tbl"><table>
+<tr><th>类型</th><th>例子</th></tr>
+<tr><td>不足八隅</td><td>Be（BeCl₂，4 e⁻）、B（BF₃、BH₃，6 e⁻）</td></tr>
+<tr><td>奇数电子</td><td>NO、NO₂</td></tr>
+<tr><td>超八隅</td><td>只有第 3 周期及以后的中心原子：PCl₅、SF₄、ICl₅、XeF₄、ICl₄⁻。CF₄ 不违反八隅</td></tr>
+</table></div>
+</div></details>
+
+<details open><summary>Ch8 键级、键长、键能</summary><div class="body">
+<ul>
+<li>键级越高 → 键越短、越强：N–N 147 pm &gt; N=N 124 pm &gt; N≡N 110 pm。</li>
+<li>Triple bond = 3 对共用电子 = 1σ + 2π。C 最多 2 个双键。</li>
+<li>Bond enthalpy 永远为正（断键吸热）。</li>
+</ul>
+<div class="eq">ΔH_rxn = Σ D(bonds broken) − Σ D(bonds formed)</div>
+<p><b>例（题 34）</b>　HC≡CH + 2HI → CH₂I–CH₂I<br>
+断：C≡C 839 + 2 × H–I 299 = 1437<br>
+成：C–C 348 + 2 × C–I 240 + 2 × C–H 413 = 1654<br>
+ΔH = 1437 − 1654 = <b>−217 kJ</b></p>
+<p>只算变化了的键，写出算式，最后看清 forward 还是 reverse。</p>
+</div></details>
+
+<details><summary>Ch6 / Ch2 保分点</summary><div class="body">
+<h4>电子排布</h4>
+<ul>
+<li>量子数：n ≥ 1；l = 0…n−1；mₗ = −l…+l；mₛ = ±½。第 n 层有 n² 个轨道（第 3 层 = 9）。第一个 d 亚层在 n = 3。</li>
+<li>Aufbau → Pauli → Hund（简并轨道先单占、自旋平行）。</li>
+<li>过渡金属阳离子<mark>先失 4s 再失 3d</mark>：Fe²⁺ [Ar]3d⁶（4 未成对）、Co²⁺ [Ar]3d⁷、V²⁺ [Ar]3d³、Ti²⁺ [Ar]3d²。</li>
+<li>例外：Cr [Ar]4s¹3d⁵、Cu [Ar]4s¹3d¹⁰。</li>
+<li>写完数上标之和 = 电子数；未成对电子画 orbital diagram 数，不要猜。</li>
+<li>Ba 最外层 n = 6；价层 5s²、内层 4d 未填满的是过渡金属。第 3 周期元素的 core = [Ne]。</li>
+</ul>
+<h4>原子与命名</h4>
+<ul>
+<li>平均原子质量 = Σ(同位素质量 × 丰度小数)；质谱峰高 = 相对丰度。</li>
+<li>离子化合物：可变价金属用罗马数字（iron(II) chloride）。分子化合物用前缀（dinitrogen tetroxide）。</li>
+<li>含氧酸：-ate → -ic acid，-ite → -ous acid；二元酸：hydro-…-ic acid。</li>
+<li>易错：ammonium（NH₄⁺）不是 ammonia；nitrite NO₂⁻ / nitrate NO₃⁻；chlorate ClO₃⁻；superoxide O₂⁻；peroxide O₂²⁻。</li>
+</ul>
+</div></details>`,
+quiz:[
+ ["按半径从大到小排 S²⁻、Cl⁻、K⁺、Ca²⁺，并解释。","S²⁻ &gt; Cl⁻ &gt; K⁺ &gt; Ca²⁺。等电子（18 e⁻），S 相同，Z 增大 → Zeff 增大 → R 减小。"],
+ ["为什么 IE₁(O) &lt; IE₁(N)？","N 为 2p³ 半满更稳定；O 的 2p⁴ 有一对成对电子，排斥使其中一个更易失去。"],
+ ["某元素 IE₁–IE₅（kJ/mol）：738, 1451, 7733, 10540, 13630。它在哪一族？","IE₂→IE₃ 突跃 → 2 个价电子 → Group 2（Mg）。"],
+ ["NaF、MgO、NaCl 的 lattice energy 从大到小？","MgO &gt; NaF &gt; NaCl（先比电荷，再比半径）。"],
+ ["SO₃²⁻ 有多少价电子？按 FC 最小画法有几个等价共振式？","26 e⁻；3 个（一个 S=O，S 的 FC = 0）。"],
+ ["CO₃²⁻ 中单键 O 的形式电荷？","−1。"],
+ ["哪个键极性最大：C–O、N–O、C–F、S–O？","C–F（ΔEN = 1.5）。"],
+ ["CH₄ + Cl₂ → CH₃Cl + HCl 的 ΔH？（C–H 413、Cl–Cl 242、C–Cl 328、H–Cl 431）","(413 + 242) − (328 + 431) = −104 kJ。"],
+ ["Cr³⁺ 的排布和未成对电子数？","[Ar]3d³，3 个。"],
+ ["Al³⁺(g) + e⁻ → Al²⁺(g) 的能量变化等于什么？","等于 Al 第三电离能的负值（−IE₃）。"],
+ ["哪个键是 nonpolar covalent（最接近）：O–H、C–H、N–H、H–F？（错题 4 变式）","C–H，ΔEN = 0.4。"],
+ ["HC≡CH + 2HI → CH₂I–CH₂I 的 ΔH = −217 kJ，那么逆反应的 ΔH？（错题 35 变式）","+217 kJ。reverse 变号。"],
+ ["下列哪个中心原子不能 expanded octet：P、S、Be、Xe？（错题 40 变式）","Be。第 2 周期只有 4 个轨道。"],
+ ["写出 Ga 的完整电子排布。（FRQ 2c）","1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p¹（上标和 = 31）。"]
+],
+plan:[
+ {day:"11/1 周日",items:[
+  ["重做 Mid-term Review 错题 4、13、22、26、35、40，每题写一句理由","30 min"],
+  ["合上资料，默写 Ch7 两张模板表（半径 5 行 + IE 6 行），对照改","45 min"],
+  ["重做作业里被改过的 7.63、7.64、7.67、7.71、7.75、7.104","45 min"],
+  ["默画 Lewis：NO₂⁻、NO₃⁻、CO₃²⁻、SO₂、SO₃、SO₄²⁻、PO₄³⁻、NCS⁻、BeCl₂、ICl₅，每个标 FC 并核对总电子数","60 min"]]},
+ {day:"11/2 周一",today:true,items:[
+  ["重做作业 8.43–8.81 里的错题 + 2 道键能计算（含一道 reverse）","60 min"],
+  ["练 FRQ 1 整题（Mg/Ca/Al/C），用英文写完整句子","限时 15 min"],
+  ["写 5 个过渡金属离子的排布 + 未成对数","15 min"],
+  ["做「自测」标签里的题，只回看错的部分；早点睡",""]]}
+]
+};
+
+/* ===================== BC CONTENT ===================== */
+const R=String.raw;
+function graphSVG(o){
+ /* o: {x:[min,max], y:[min,max], segs:[[x1,y1,x2,y2],...], dots:[[x,y,filled]], label} */
+ const u=34,pad=26,W=(o.x[1]-o.x[0])*u+pad*2,H=(o.y[1]-o.y[0])*u+pad*2;
+ const X=x=>pad+(x-o.x[0])*u, Y=y=>pad+(o.y[1]-y)*u;
+ let s=`<svg viewBox="0 0 ${W} ${H}" width="${W}" style="max-width:100%;height:auto" role="img" aria-label="${o.label||"graph"}">`;
+ for(let x=o.x[0];x<=o.x[1];x++)s+=`<line x1="${X(x)}" y1="${Y(o.y[0])}" x2="${X(x)}" y2="${Y(o.y[1])}" stroke="var(--line)" stroke-width="1"/>`;
+ for(let y=o.y[0];y<=o.y[1];y++)s+=`<line x1="${X(o.x[0])}" y1="${Y(y)}" x2="${X(o.x[1])}" y2="${Y(y)}" stroke="var(--line)" stroke-width="1"/>`;
+ s+=`<line x1="${X(o.x[0])}" y1="${Y(0)}" x2="${X(o.x[1])}" y2="${Y(0)}" stroke="var(--ink)" stroke-width="1.5"/><line x1="${X(0)}" y1="${Y(o.y[0])}" x2="${X(0)}" y2="${Y(o.y[1])}" stroke="var(--ink)" stroke-width="1.5"/>`;
+ for(let x=o.x[0];x<=o.x[1];x++)if(x)s+=`<text x="${X(x)}" y="${Y(0)+15}" font-size="11" text-anchor="middle" fill="var(--muted)" font-family="IBM Plex Mono,monospace">${x}</text>`;
+ for(let y=o.y[0];y<=o.y[1];y++)if(y)s+=`<text x="${X(0)-6}" y="${Y(y)+4}" font-size="11" text-anchor="end" fill="var(--muted)" font-family="IBM Plex Mono,monospace">${y}</text>`;
+ (o.segs||[]).forEach(([a,b,c,d])=>s+=`<line x1="${X(a)}" y1="${Y(b)}" x2="${X(c)}" y2="${Y(d)}" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round"/>`);
+ (o.dots||[]).forEach(([a,b])=>s+=`<circle cx="${X(a)}" cy="${Y(b)}" r="3.5" fill="var(--accent)"/>`);
+ return s+`</svg>`;
+}
+const G24=graphSVG({x:[-2,4],y:[-1,3],segs:[[0,3,2,-1]],dots:[[0,3],[2,-1]],label:"f 在 0 到 2 之间的线段"});
+const G_FRQ2=graphSVG({x:[-3,4],y:[-2,2],segs:[[-3,-2,-1,2],[-1,2,1,2],[1,2,3,-2],[3,-2,4,0]],dots:[[-3,-2],[-1,2],[1,2],[3,-2],[4,0]],label:"FRQ 2 的 f 图像"});
+const TBL13=R`<div class="tbl" style="max-width:420px"><table><tr><th>\(x\)</th><th>1</th><th>2</th><th>3</th></tr>
+<tr><td>\(f(x)\)</td><td>3</td><td>1</td><td>2</td></tr><tr><td>\(f'(x)\)</td><td>−2</td><td>5</td><td>4</td></tr>
+<tr><td>\(g(x)\)</td><td>2</td><td>3</td><td>1</td></tr><tr><td>\(g'(x)\)</td><td>4</td><td>−2</td><td>6</td></tr></table></div>`;
+
+const BC={
+scope:"范围：Limits · Continuity · Differentiability · 导数定义 · 求导法则 · 反函数求导 · 隐函数求导 · 切线 / 法线。模拟卷和真考一样：28 道选择（55 分钟）+ 4 道 FRQ（50 分钟），全程不用计算器。",
+mistakes:R`
+<div>
+<h3>易错点 Top 10</h3>
+<div class="tbl"><table>
+<tr><th>#</th><th>错法</th><th>正确</th></tr>
+<tr><td>1</td><td>商法则分子顺序写反</td><td>\(\left(\frac uv\right)'=\frac{u'v-uv'}{v^2}\)，「下导上减上导下」</td></tr>
+<tr><td>2</td><td>Chain rule 漏乘内层导数</td><td>\(\sin 3x\to 3\cos 3x\)，\(e^{x^2}\to 2xe^{x^2}\)，\(\ln(x^2+1)\to\frac{2x}{x^2+1}\)</td></tr>
+<tr><td>3</td><td>反函数求导用了 \(f'(a)\)</td><td>\((f^{-1})'(a)=\dfrac{1}{f'(b)}\)，其中 \(f(b)=a\)</td></tr>
+<tr><td>4</td><td>隐函数里 \(xy\) 没用乘积法则；\(y^2\) 求导写成 \(2y\)</td><td>\((xy)'=y+xy'\)，\((y^2)'=2yy'\)</td></tr>
+<tr><td>5</td><td>法线斜率忘了取负倒数</td><td>法线斜率 \(=-\frac1m\)</td></tr>
+<tr><td>6</td><td>分段函数可导只验证了连续</td><td>两个方程：值相等 + 导数相等</td></tr>
+<tr><td>7</td><td>横 / 竖切线求出点后没代回原方程</td><td>点必须在曲线上</td></tr>
+<tr><td>8</td><td>\((\ln 2x)'=\frac{1}{2x}\)；\((\sin^2x)'=2\sin x\)</td><td>\((\ln 2x)'=\frac1x\)；\((\sin^2x)'=2\sin x\cos x\)</td></tr>
+<tr><td>9</td><td>\((a^x)'\) 漏 \(\ln a\)</td><td>\((a^x)'=a^x\ln a\)；\((\log_a x)'=\frac{1}{x\ln a}\)</td></tr>
+<tr><td>10</td><td>极限得 \(\frac00\) 就写「不存在」</td><td>\(\frac00\) 是待定型，先约分 / 有理化 / 特殊极限</td></tr>
+</table></div>
+</div>
+<div>
+<h3>模拟卷里的陷阱选项</h3>
+<div class="grid2">
+<div class="alert"><b>第 13 题：−10 是陷阱。</b>\(h'(2)=f'(g(2))\,g'(2)=f'(3)\cdot(-2)=-8\)。写成 \(f'(2)g'(2)\) 就错了。先查内层 \(g(2)\)，再查外层。</div>
+<div class="alert"><b>第 15 题：用 \(f'(3)\)，不是 \(f'(2)\)。</b>在 \(f(x)\) 那一行找 2，对应 \(x=3\)。</div>
+<div class="note"><b>第 10 题：IVT vs MVT。</b>只给了连续，只能用 IVT。说 \(f'(c)=\dots\) 需要可导（MVT）。</div>
+<div class="note"><b>FRQ 写法：</b>每一步先写符号公式再代数，例 \(h'(2)=f'(g(2))g'(2)=\dots\)。AP 评分看这一步。</div>
+</div>
+</div>
+<div>
+<h3>标准答句</h3>
+<div class="note"><b>IVT</b>：Since \(f\) is continuous on \([a,b]\) and \(f(a)&lt;k&lt;f(b)\), by the IVT there exists \(c\) in \((a,b)\) such that \(f(c)=k\).<br>题目给 differentiable 时，先说 differentiable \(\Rightarrow\) continuous。</div>
+<div class="note" style="margin-top:14px"><b>连续</b>：三条都写出来：(1) \(f(a)\) 存在 (2) \(\lim_{x\to a}f(x)\) 存在 (3) 两者相等。</div>
+</div>`,
+ref:R`
+<details open><summary>1 · Limits 极限</summary><div class="body">
+<p>求法顺序：直接代入 → 得 \(\frac00\) 就因式分解约分 / 有理化 / 特殊极限 → 讨论单侧极限。</p>
+<ul>
+<li>\(\lim_{x\to a}f(x)=L\iff\) 左右极限都等于 \(L\)</li>
+<li>特殊极限：\(\lim_{x\to0}\frac{\sin x}{x}=1\)，\(\lim_{x\to0}\frac{1-\cos x}{x}=0\)，\(\lim_{x\to0}\frac{\sin ax}{bx}=\frac ab\)，\(\lim_{x\to0}\frac{\tan ax}{x}=a\)</li>
+<li>\(x\to\pm\infty\) 有理函数：分子次数小 ⇒ 0；相等 ⇒ 首项系数比；分子大 ⇒ \(\pm\infty\)</li>
+<li>绝对值：\(\lim_{x\to a^-}\frac{|x-a|}{x-a}=-1\)，右侧 \(=1\)，双侧不存在</li>
+<li>Squeeze：\(g\le f\le h\) 且 \(\lim g=\lim h=L\Rightarrow\lim f=L\)（例 \(x^2\sin\frac1x\to0\)）</li>
+</ul></div></details>
+<details open><summary>2 · Continuity 连续性</summary><div class="body">
+<ul>
+<li>间断类型：<b>removable</b>（极限存在，但 \(\ne f(a)\) 或无定义）；<b>jump</b>（左右极限不等）；<b>infinite</b>（垂直渐近线）</li>
+<li>分段函数求参数：左式在分界点的值 = 右式在分界点的值</li>
+<li>IVT：\(f\) 在 \([a,b]\) 连续，\(k\) 介于 \(f(a),f(b)\) 之间 ⇒ \(\exists c\in(a,b),\ f(c)=k\)</li>
+</ul></div></details>
+<details open><summary>3 · Differentiability 可导性</summary><div class="body">
+<ul>
+<li>可导 ⇒ 连续，反之不成立。</li>
+<li>不可导四种：corner（\(|x|\)）、cusp（\(x^{2/3}\)）、vertical tangent（\(\sqrt[3]x\)）、discontinuity</li>
+<li>分段函数可导求参数：<mark>值相等 + 导数相等</mark>两个方程</li>
+</ul></div></details>
+<details open><summary>4 · 导数定义</summary><div class="body">
+<div class="eq">\(f'(a)=\lim_{h\to0}\dfrac{f(a+h)-f(a)}{h}=\lim_{x\to a}\dfrac{f(x)-f(a)}{x-a}\)</div>
+<p>认出「伪装」的导数：</p>
+<ul>
+<li>\(\lim_{h\to0}\frac{(2+h)^5-32}{h}=\frac{d}{dx}x^5\big|_{x=2}=80\)</li>
+<li>\(\lim_{h\to0}\frac{\sin(\frac\pi6+h)-\frac12}{h}=\cos\frac\pi6=\frac{\sqrt3}2\)</li>
+<li>\(\lim_{x\to1}\frac{\ln x}{x-1}=(\ln x)'|_{x=1}=1\)</li>
+</ul>
+<p>用定义求导：根号乘共轭；分式通分；多项式展开后约掉 \(h\)。表格估计 \(f'(c)\approx\frac{f(b)-f(a)}{b-a}\)，取最近两点，写出算式，带单位。</p>
+</div></details>
+<details open><summary>5 · 求导法则</summary><div class="body">
+<div class="tbl"><table>
+<tr><th>法则</th><th>公式</th></tr>
+<tr><td>Power</td><td>\((x^n)'=nx^{n-1}\)　先把 \(\sqrt x,\ \frac1{x^2}\) 改写成 \(x^{1/2},\ x^{-2}\)</td></tr>
+<tr><td>Product</td><td>\((uv)'=u'v+uv'\)</td></tr>
+<tr><td>Quotient</td><td>\(\left(\frac uv\right)'=\frac{u'v-uv'}{v^2}\)</td></tr>
+<tr><td>Chain</td><td>\([f(g(x))]'=f'(g(x))\cdot g'(x)\)　外层求导，里面不动，再乘里层导数</td></tr>
+</table></div>
+<p style="margin-top:8px">常见形式：\((u^n)'=nu^{n-1}u'\)，\((e^u)'=e^uu'\)，\((\ln u)'=\frac{u'}u\)，\((\sin u)'=\cos u\cdot u'\)，\((a^u)'=a^u\ln a\cdot u'\)</p>
+<p>多层：\(\frac{d}{dx}\cos^2(3x)=2\cos 3x\cdot(-\sin3x)\cdot3\)，一层一层剥。</p>
+<p>化简：对 ln 先拆开，\(\ln\frac{x^2}{(x+1)^3}=2\ln x-3\ln(x+1)\)。</p>
+</div></details>
+<details open><summary>6 · 导数公式表（必背）</summary><div class="body">
+<div class="grid2">
+<div><h4>Trig</h4><p>\((\sin x)'=\cos x\)<br>\((\cos x)'=-\sin x\)<br>\((\tan x)'=\sec^2x\)<br>\((\cot x)'=-\csc^2x\)<br>\((\sec x)'=\sec x\tan x\)<br>\((\csc x)'=-\csc x\cot x\)</p><p class="scope">带 c 的都有负号</p></div>
+<div><h4>Exp / Log</h4><p>\((e^x)'=e^x\)<br>\((a^x)'=a^x\ln a\)<br>\((\ln x)'=\frac1x\)<br>\((\log_ax)'=\frac{1}{x\ln a}\)<br>\((\ln|x|)'=\frac1x\)</p></div>
+<div><h4>Inverse Trig</h4><p>\((\arcsin x)'=\frac{1}{\sqrt{1-x^2}}\)<br>\((\arccos x)'=-\frac{1}{\sqrt{1-x^2}}\)<br>\((\arctan x)'=\frac{1}{1+x^2}\)<br>\((\text{arccot}\,x)'=-\frac{1}{1+x^2}\)<br>\((\text{arcsec}\,x)'=\frac{1}{|x|\sqrt{x^2-1}}\)<br>\((\text{arccsc}\,x)'=-\frac{1}{|x|\sqrt{x^2-1}}\)</p></div>
+</div></div></details>
+<details open><summary>7 · 反函数求导（重点）</summary><div class="body">
+<div class="eq">\((f^{-1})'(a)=\dfrac{1}{f'\big(f^{-1}(a)\big)}\)　即　\(\dfrac{dx}{dy}=\dfrac{1}{dy/dx}\)</div>
+<p><b>三步法</b>（\(g=f^{-1}\)，求 \(g'(a)\)）：① 找 \(b\) 使 \(f(b)=a\)（解方程 / 在 \(f(x)\) 那一行找 / 看图找 \(y=a\)）② 算 \(f'(b)\) ③ \(g'(a)=\frac1{f'(b)}\)</p>
+<ul>
+<li>例 1：\(f(x)=x^3+x-2\)，\(f(1)=0\)，\(f'(1)=4\) ⇒ \(g'(0)=\frac14\)</li>
+<li>例 2（表格）：\(f(3)=7,\ f'(3)=2\) ⇒ \((f^{-1})'(7)=\frac12\)。<mark>在 \(f(x)\) 那一行找 7</mark></li>
+<li>例 3：\(h(g(x))=x\) ⇒ \(g\) 是 \(h\) 的反函数，两边求导 \(h'(g(x))g'(x)=1\)</li>
+<li>例 4：\(f(x)=2x+\sin x\)，\(f(\pi)=2\pi\)，\(f'(\pi)=1\) ⇒ \((f^{-1})'(2\pi)=1\)</li>
+</ul></div></details>
+<details open><summary>8 · 隐函数求导</summary><div class="body">
+<p>步骤：两边对 \(x\) 求导，含 \(y\) 的项每次乘 \(y'\) → 含 \(y'\) 的项移到一边 → 提出 \(y'\)。</p>
+<p>\(\frac{d}{dx}y^3=3y^2y'\)，\(\frac{d}{dx}(xy)=y+xy'\)，\(\frac{d}{dx}\sin(xy)=\cos(xy)(y+xy')\)，\(\frac{d}{dx}e^y=e^yy'\)</p>
+<p>例：\(x^2+xy-y^2=1\) 在 \((2,3)\)：\(y'=\frac{2x+y}{2y-x}=\frac74\)</p>
+<p>二阶：\(x^2+y^2=25\Rightarrow y'=-\frac xy\Rightarrow y''=-\frac{y-xy'}{y^2}=-\frac{x^2+y^2}{y^3}=-\frac{25}{y^3}\)</p>
+<ul>
+<li>水平切线：\(y'\) 分子 = 0（分母 ≠ 0）；竖直切线：分母 = 0（分子 ≠ 0）。<mark>代回原方程验证</mark></li>
+<li>求某点斜率时先代数再解 \(y'\)，更快</li>
+</ul></div></details>
+<details open><summary>9 · 切线与法线</summary><div class="body">
+<ul>
+<li>切线 \(y-y_1=m(x-x_1)\)，\(m=f'(x_1)\)；法线斜率 \(-\frac1m\)</li>
+<li>切线水平 ⇒ 法线 \(x=x_1\)；切线竖直 ⇒ 法线 \(y=y_1\)</li>
+<li>只给 \(x_1\) 时自己算 \(y_1=f(x_1)\)</li>
+<li>平行于斜率 \(k\) 的直线 ⇒ \(f'(x)=k\)；垂直 ⇒ \(f'(x)=-\frac1k\)</li>
+<li>线性近似 \(f(x)\approx f(a)+f'(a)(x-a)\)；AP 允许点斜式作答</li>
+</ul></div></details>
+<details><summary>10 · 表格题 &amp; 图像题</summary><div class="body">
+<h4>表格题</h4>
+<ul><li>先写符号公式再代数：\(h'(2)=f'(g(2))g'(2)=f'(3)\cdot g'(2)\)</li><li>复合函数先查内层 \(g(2)\)，再用它查外层 \(f'\)</li><li>估计 \(f''\) 用 \(f'\) 那行的差商</li></ul>
+<h4>图像题</h4>
+<ul><li>线段：斜率 \(\frac{\Delta y}{\Delta x}\)，折点不可导</li><li>半圆：切线 ⊥ 半径；最高最低点 \(f'=0\)；端点竖直切线</li><li>给的是 \(f'\) 的图时：纵坐标就是 \(f'\) 的值</li><li>\(f(f(x)),\ f(x^2),\ f(3x-1)\)：先算内层值，确认落在哪一段，再读斜率</li></ul>
+</div></details>
+<details><summary>11 · 特殊角三角函数</summary><div class="body">
+<div class="tbl"><table>
+<tr><th>\(\theta\)</th><th>0</th><th>\(\frac\pi6\)</th><th>\(\frac\pi4\)</th><th>\(\frac\pi3\)</th><th>\(\frac\pi2\)</th><th>\(\frac{2\pi}3\)</th><th>\(\frac{3\pi}4\)</th><th>\(\frac{5\pi}6\)</th><th>\(\pi\)</th></tr>
+<tr><td>sin</td><td>0</td><td>\(\frac12\)</td><td>\(\frac{\sqrt2}2\)</td><td>\(\frac{\sqrt3}2\)</td><td>1</td><td>\(\frac{\sqrt3}2\)</td><td>\(\frac{\sqrt2}2\)</td><td>\(\frac12\)</td><td>0</td></tr>
+<tr><td>cos</td><td>1</td><td>\(\frac{\sqrt3}2\)</td><td>\(\frac{\sqrt2}2\)</td><td>\(\frac12\)</td><td>0</td><td>\(-\frac12\)</td><td>\(-\frac{\sqrt2}2\)</td><td>\(-\frac{\sqrt3}2\)</td><td>−1</td></tr>
+<tr><td>tan</td><td>0</td><td>\(\frac{\sqrt3}3\)</td><td>1</td><td>\(\sqrt3\)</td><td>und.</td><td>\(-\sqrt3\)</td><td>−1</td><td>\(-\frac{\sqrt3}3\)</td><td>0</td></tr>
+<tr><td>sec</td><td>1</td><td>\(\frac{2\sqrt3}3\)</td><td>\(\sqrt2\)</td><td>2</td><td>und.</td><td>−2</td><td>\(-\sqrt2\)</td><td>\(-\frac{2\sqrt3}3\)</td><td>−1</td></tr>
+</table></div>
+<ul style="margin-top:8px"><li>\(\frac{3\pi}2\)：sin = −1，cos = 0。ASTC：I 全正，II sin 正，III tan 正，IV cos 正</li>
+<li>\(\sin^2x+\cos^2x=1\)，\(1+\tan^2x=\sec^2x\)，\(\sin2x=2\sin x\cos x\)，\(\cos2x=1-2\sin^2x\)</li>
+<li>反三角值域：arcsin \([-\frac\pi2,\frac\pi2]\)，arccos \([0,\pi]\)，arctan \((-\frac\pi2,\frac\pi2)\)。例 \(\arccos(-\frac12)=\frac{2\pi}3\)</li></ul>
+</div></details>`,
+mcq:[
+ [R`\(\displaystyle\lim_{x\to3}\frac{x^2-9}{x^2-2x-3}=\)`,[R`0`,R`1`,R`\(\frac32\)`,R`3`,R`nonexistent`],2,R`\(\frac{(x-3)(x+3)}{(x-3)(x+1)}=\frac{x+3}{x+1}\to\frac64=\frac32\)。先约分再代入。`],
+ [R`\(\displaystyle\lim_{x\to\infty}\frac{3x^3-x+1}{5-2x^3}=\)`,[R`\(-\frac32\)`,R`\(-\frac15\)`,R`0`,R`\(\frac32\)`,R`\(\infty\)`],0,R`分子分母同次，取首项系数比 \(\frac{3}{-2}\)。`],
+ [R`\(\displaystyle\lim_{x\to0}\frac{\sin 5x}{2x}=\)`,[R`0`,R`\(\frac25\)`,R`1`,R`\(\frac52\)`,R`5`],3,R`\(\frac{\sin5x}{2x}=\frac52\cdot\frac{\sin5x}{5x}\to\frac52\)。`],
+ [R`\(\displaystyle\lim_{x\to2^-}\frac{|x-2|}{x-2}=\)`,[R`−1`,R`0`,R`1`,R`\(\infty\)`,R`nonexistent`],0,R`\(x&lt;2\) 时 \(|x-2|=-(x-2)\)，商为 −1。（双侧极限不存在。）`],
+ [R`\(\displaystyle\lim_{h\to0}\frac{\cos(\frac\pi3+h)-\cos\frac\pi3}{h}=\)`,[R`\(-\frac12\)`,R`\(-\frac{\sqrt3}2\)`,R`0`,R`\(\frac12\)`,R`\(\frac{\sqrt3}2\)`],1,R`就是 \(f=\cos x\) 在 \(\frac\pi3\) 的导数：\(-\sin\frac\pi3=-\frac{\sqrt3}2\)。`],
+ [R`\(\displaystyle\lim_{h\to0}\frac{(2+h)^5-32}{h}=\)`,[R`0`,R`32`,R`40`,R`80`,R`nonexistent`],3,R`就是 \(f=x^5\) 在 2 的导数：\(5\cdot2^4=80\)。`],
+ [R`\(f(x)=\begin{cases}kx+1,&x\le2\\x^2-k,&x&gt;2\end{cases}\)。\(k\) 为何值时 \(f\) 在 \(x=2\) 连续？`,[R`−1`,R`0`,R`1`,R`\(\frac32\)`,R`3`],2,R`左值 \(2k+1\)，右极限 \(4-k\)。\(2k+1=4-k\Rightarrow k=1\)。`],
+ [R`\(f(x)=\begin{cases}x^3,&x\le1\\ax+b,&x&gt;1\end{cases}\)。若 \(f\) 在 \(x=1\) 可导，则 \(a+b=\)`,[R`−2`,R`1`,R`2`,R`3`,R`5`],1,R`连续：\(1=a+b\)。斜率相等：\(3x^2|_{x=1}=3=a\)，\(b=-2\)。\(a+b\) 其实就是 \(f(1)=1\)。`],
+ [R`\(f(x)=|x-2|\)。哪些正确？<br>I. \(\lim_{x\to2}f(x)\) 存在　II. \(f\) 在 \(x=2\) 连续　III. \(f\) 在 \(x=2\) 可导`,[R`I only`,R`II only`,R`I and II only`,R`I, II, and III`,R`None`],2,R`极限 = 0 = \(f(2)\)，连续；但有 corner：左斜率 −1，右斜率 1，不可导。`],
+ [R`\(f\) 在 \([1,4]\) 连续，\(f(1)=3\)，\(f(4)=-2\)。下列哪项一定成立？`,[R`\(f(c)=0\) for at least one \(c\) in \((1,4)\)`,R`\(f'(c)=-\frac53\) for at least one \(c\) in \((1,4)\)`,R`\(f\) has its absolute maximum on \([1,4]\) at \(x=1\)`,R`\(f\) is decreasing on \([1,4]\)`,R`\(f(2.5)=0.5\)`],0,R`IVT：0 介于 −2 和 3 之间。(B) 需要可导（MVT），其他都不一定。`],
+ [R`若 \(y=x^2\sin(3x)\)，则 \(\frac{dy}{dx}=\)`,[R`\(6x\cos3x\)`,R`\(2x\sin3x+x^2\cos3x\)`,R`\(2x\sin3x+3x^2\cos3x\)`,R`\(2x\sin3x-3x^2\cos3x\)`,R`\(2x\cos3x\)`],2,R`乘积 + 链式：\(2x\sin3x+x^2\cdot3\cos3x\)。`],
+ [R`若 \(f(x)=\dfrac{2x+1}{x^2+1}\)，则 \(f'(1)=\)`,[R`−1`,R`\(-\frac12\)`,R`0`,R`\(\frac12\)`,R`1`],1,R`\(f'(x)=\frac{2(x^2+1)-(2x+1)(2x)}{(x^2+1)^2}\)，\(x=1\)：\(\frac{4-6}{4}=-\frac12\)。`],
+ [TBL13+R`<p>\(h(x)=f(g(x))\)，则 \(h'(2)=\)</p>`,[R`−10`,R`−8`,R`−2`,R`4`,R`20`],1,R`\(h'(2)=f'(g(2))g'(2)=f'(3)\cdot(-2)=4(-2)=-8\)。−10 是陷阱 \(f'(2)g'(2)\)。`],
+ [R`（同上表）\(k(x)=\dfrac{f(x)}{g(x)}\)，则 \(k'(2)=\)`,[R`\(-\frac52\)`,R`\(\frac{13}9\)`,R`\(\frac{17}9\)`,R`\(\frac53\)`,R`\(\frac{17}3\)`],2,R`\(\frac{f'(2)g(2)-f(2)g'(2)}{[g(2)]^2}=\frac{5\cdot3-1\cdot(-2)}{9}=\frac{17}9\)。`],
+ [R`（同上表）\(f\) 在含 \(x=3\) 的开区间上一一对应，\(p\) 是 \(f\) 在该区间上的反函数。\(p'(2)=\)`,[R`−2`,R`\(\frac15\)`,R`\(\frac13\)`,R`\(\frac14\)`,R`4`],3,R`\(f(3)=2\)，所以 \(p'(2)=\frac1{f'(3)}=\frac14\)。注意是 \(f'(3)\) 不是 \(f'(2)\)。`],
+ [R`\(f(x)=x^3+2x+1\)，\(g\) 是 \(f\) 的反函数。\(g'(4)=\)`,[R`\(\frac1{50}\)`,R`\(\frac1{14}\)`,R`\(\frac15\)`,R`5`,R`50`],2,R`解 \(x^3+2x+1=4\Rightarrow x=1\)。\(f'(1)=3+2=5\)，\(g'(4)=\frac15\)。`],
+ [R`\(f(x)=2x+\sin x\)，\(g=f^{-1}\)。\(g'(2\pi)=\)`,[R`−1`,R`\(\frac13\)`,R`\(\frac12\)`,R`1`,R`3`],3,R`\(f(\pi)=2\pi\)；\(f'(\pi)=2+\cos\pi=1\)；\(g'(2\pi)=1\)。`],
+ [R`\(\dfrac{d}{dx}\left[\arcsin(x^2)\right]=\)`,[R`\(\frac{1}{\sqrt{1-x^4}}\)`,R`\(\frac{2x}{\sqrt{1-x^4}}\)`,R`\(\frac{2x}{\sqrt{1-x^2}}\)`,R`\(\frac{2x}{1+x^4}\)`,R`\(\frac{-2x}{\sqrt{1-x^4}}\)`],1,R`\(\frac{1}{\sqrt{1-(x^2)^2}}\cdot2x\)。`],
+ [R`若 \(f(x)=\sec x\)，则 \(f'\!\left(\frac\pi3\right)=\)`,[R`\(\frac{\sqrt3}2\)`,R`\(\frac{2}{\sqrt3}\)`,R`2`,R`\(2\sqrt3\)`,R`4`],3,R`\(\sec x\tan x\) 在 \(\frac\pi3\)：\(2\cdot\sqrt3\)。`],
+ [R`若 \(y=\ln(x^2+1)+3^x\)，则 \(\frac{dy}{dx}\big|_{x=0}=\)`,[R`0`,R`1`,R`3`,R`\(1+\ln3\)`,R`\(\ln3\)`],4,R`\(\frac{2x}{x^2+1}+3^x\ln3\)，\(x=0\)：\(0+\ln3\)。`],
+ [R`若 \(x^2+xy+y^2=7\)，在点 \((1,2)\) 处 \(\frac{dy}{dx}=\)`,[R`\(-\frac54\)`,R`\(-\frac45\)`,R`\(-\frac12\)`,R`\(\frac45\)`,R`\(\frac54\)`],1,R`\(2x+y+xy'+2yy'=0\Rightarrow y'=-\frac{2x+y}{x+2y}=-\frac45\)。`],
+ [R`若 \(x^2+y^2=25\)，在点 \((3,4)\) 处 \(\frac{d^2y}{dx^2}=\)`,[R`\(-\frac{25}{64}\)`,R`\(-\frac3{16}\)`,R`\(-\frac34\)`,R`\(\frac{25}{64}\)`,R`\(\frac34\)`],0,R`\(y'=-\frac xy\)，\(y''=-\frac{x^2+y^2}{y^3}=-\frac{25}{64}\)。`],
+ [R`\(y=\tan x\) 在 \(x=\frac\pi4\) 处的法线方程是`,[R`\(y-1=2(x-\frac\pi4)\)`,R`\(y-1=-2(x-\frac\pi4)\)`,R`\(y-1=-\frac12(x-\frac\pi4)\)`,R`\(y-1=\frac12(x-\frac\pi4)\)`,R`\(y=-\frac12x\)`],2,R`\(y'=\sec^2x=2\)，点 \((\frac\pi4,1)\)，法线斜率 \(-\frac12\)。`],
+ [`<div class="fig">${G24}<p class="scope" style="margin:4px 0 0">原图由三条线段组成，这里只画了本题用到的那一段：(0, 3) 到 (2, −1)。完整图见纸质卷。</p></div>`+R`<p>\(h(x)=f(x^2)\)，则 \(h'(1)=\)</p>`,[R`−8`,R`−4`,R`−2`,R`2`,R`4`],1,R`\(h'(1)=f'(1)\cdot2(1)\)；\((0,2)\) 上斜率 \(\frac{-1-3}{2}=-2\)；\(h'(1)=-4\)。`],
+ [R`（同上图）\(g(x)=f(f(x))\)，则 \(g'(1)=\)`,[R`−4`,R`−2`,R`1`,R`2`,R`4`],4,R`\(f(1)=1\)，\(g'(1)=f'(f(1))f'(1)=f'(1)^2=(-2)^2=4\)。`],
+ [R`\(\dfrac{d^2}{dx^2}(xe^x)=\)`,[R`\(e^x\)`,R`\(xe^x\)`,R`\((x+1)e^x\)`,R`\((x+2)e^x\)`,R`\(2e^x\)`],3,R`\(y'=(x+1)e^x\)，\(y''=(x+2)e^x\)。`],
+ [R`\(y=x^3-3x^2\) 的切线在哪些 \(x\) 处平行于 \(y=9x+1\)？`,[R`3 only`,R`−1 only`,R`−1 and 3`,R`1 and −3`,R`0 and 2`],2,R`\(3x^2-6x=9\Rightarrow x^2-2x-3=0\Rightarrow x=3,-1\)。`],
+ [R`\(\dfrac{d}{dx}\left[\cos^2(3x)\right]=\)`,[R`\(-2\cos3x\sin3x\)`,R`\(-6\cos3x\sin3x\)`,R`\(6\cos3x\sin3x\)`,R`\(-\sin^2(3x)\)`,R`\(2\cos3x\)`],1,R`\(2\cos3x\cdot(-\sin3x)\cdot3\)。链式法则剥三层。`]
+],
+frq:[
+ {title:"1 · 表格题",stem:R`<p>\(f\) 处处可导且递增。部分取值如下：</p><div class="tbl" style="max-width:460px"><table><tr><th>\(x\)</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th></tr><tr><td>\(f(x)\)</td><td>2</td><td>3</td><td>7</td><td>10</td><td>12</td></tr><tr><td>\(f'(x)\)</td><td>1</td><td>2</td><td>5</td><td>3</td><td>1</td></tr></table></div>`,
+ parts:[
+  [R`用表中数据估计 \(f''(2)\)，写出算式。`,R`\(f''(2)\approx\frac{f'(3)-f'(1)}{3-1}=\frac{3-2}{2}=\frac12\)。（用 \(\frac{f'(3)-f'(2)}{3-2}=-2\) 也可以；一定要写出差商。）`],
+  [R`\(h(x)=x\cdot f(2x)\)，求 \(h'(1)\)。`,R`\(h'(x)=f(2x)+x\cdot f'(2x)\cdot2\)。\(h'(1)=f(2)+2f'(2)=7+10=17\)。`],
+  [R`\(w\) 是 \(f\) 的反函数，求 \(w(10)\) 和 \(w'(7)\)。`,R`\(f(3)=10\Rightarrow w(10)=3\)。\(f(2)=7\Rightarrow w'(7)=\frac1{f'(2)}=\frac15\)。`],
+  [R`写出 \(f\) 在 \(x=3\) 处的切线方程，并估计 \(f(3.1)\)。`,R`\(y=10+3(x-3)\)。\(f(3.1)\approx10+3(0.1)=10.3\)。`],
+  [R`\(m(x)=\ln(f(x))\)，求 \(m'(0)\)。`,R`\(m'(x)=\frac{f'(x)}{f(x)}\)，\(m'(0)=\frac12\)。`],
+  [R`解释为什么一定存在 \(c\in(1,2)\) 使 \(f(c)=5\)。`,R`\(f\) differentiable ⇒ continuous on \([1,2]\)。Since \(f(1)=3&lt;5&lt;7=f(2)\), by the IVT there is \(c\in(1,2)\) with \(f(c)=5\)。`]]},
+ {title:"2 · 图像题",stem:`<p>连续函数 \\(f\\) 定义在 \\([-3,4]\\) 上，图像由四条线段组成。</p><div class="fig">${G_FRQ2}<p class="scope" style="margin:4px 0 0">按答案解析里的斜率和取值重画：(−3, −2) → (−1, 2) → (1, 2) → (3, −2) → (4, 0)。</p></div>`,
+ parts:[
+  [R`求 \(f'(-2)\) 和 \(f'(2)\)。`,R`\(f'(-2)=2\)，\(f'(2)=-2\)。`],
+  [R`在 \((-3,4)\) 上，\(f\) 在哪些 \(x\) 处不可导？说明理由。`,R`\(x=-1,1,3\)。每处左右两段斜率不同（corner），左右导数不相等。`],
+  [R`\(h(x)=f(3x-1)\)，求 \(h'(1)\)。`,R`\(h'(x)=3f'(3x-1)\)，\(h'(1)=3f'(2)=-6\)。`],
+  [R`\(k(x)=x^2f(x)\)，求 \(k'(2)\)。`,R`\(k'(x)=2xf(x)+x^2f'(x)\)，\(k'(2)=4\cdot0+4\cdot(-2)=-8\)。`],
+  [R`\(q(x)=\sin\!\left(\frac\pi4f(x)\right)\)，求 \(q'(-2)\)。`,R`\(q'(x)=\cos\!\left(\frac\pi4f(x)\right)\cdot\frac\pi4f'(x)\)，\(q'(-2)=\cos0\cdot\frac\pi4\cdot2=\frac\pi2\)。`],
+  [R`\(p(x)=\dfrac{f(x)}{x}\)，求 \(p'(2)\)。`,R`\(p'(x)=\frac{xf'(x)-f(x)}{x^2}\)，\(p'(2)=\frac{2(-2)-0}{4}=-1\)。`]]},
+ {title:"3 · 隐函数求导",stem:R`<p>曲线 \(x^2y+y^3=10\)。</p>`,
+ parts:[
+  [R`证明 \(\dfrac{dy}{dx}=\dfrac{-2xy}{x^2+3y^2}\)。`,R`\(2xy+x^2y'+3y^2y'=0\Rightarrow y'(x^2+3y^2)=-2xy\Rightarrow y'=\frac{-2xy}{x^2+3y^2}\)。`],
+  [R`验证 \((1,2)\) 在曲线上，写出该点切线方程。`,R`\(1\cdot2+8=10\) ✓。斜率 \(\frac{-4}{1+12}=-\frac4{13}\)：\(y-2=-\frac4{13}(x-1)\)。`],
+  [R`写出 \((1,2)\) 处的法线方程。`,R`\(y-2=\frac{13}4(x-1)\)。`],
+  [R`求所有水平切线的点。`,R`分子 \(-2xy=0\)（分母 ≠ 0）。\(x=0\)：\(y^3=10\Rightarrow y=\sqrt[3]{10}\)。\(y=0\)：\(0=10\) 不成立。点：\((0,\sqrt[3]{10})\)。`],
+  [R`曲线上有没有竖直切线？说明理由。`,R`竖直 ⇒ \(x^2+3y^2=0\Rightarrow x=y=0\)，但 \((0,0)\) 不在曲线上（\(0\ne10\)），所以没有。`]]},
+ {title:"4 · 极限 / 连续 / 可导",stem:"",
+ parts:[
+  [R`\(g(x)=2\sqrt x\)。用导数定义求 \(g'(x)\)（\(x&gt;0\)）。`,R`\(\lim_{h\to0}\frac{2\sqrt{x+h}-2\sqrt x}{h}\cdot\frac{\sqrt{x+h}+\sqrt x}{\sqrt{x+h}+\sqrt x}=\lim_{h\to0}\frac{2h}{h(\sqrt{x+h}+\sqrt x)}=\frac{2}{2\sqrt x}=\frac1{\sqrt x}\)。`],
+  [R`\(f(x)=\begin{cases}ax^2+bx,&x\le1\\2\sqrt x,&x&gt;1\end{cases}\)。求使 \(f\) 在 \(x=1\) 可导的 \(a,b\)，写出所用条件。`,R`连续：\(a+b=2\)。导数相等：\(2a+b=\frac1{\sqrt1}=1\)。相减：\(a=-1,\ b=3\)。`],
+  [R`\(r(x)=\dfrac{x-1}{x^2-1}\)。求所有间断点并分类，用极限说明。`,R`\(r(x)=\frac{x-1}{(x-1)(x+1)}\)，在 \(x=\pm1\) 无定义。<br>\(x=1\)：\(\lim\frac1{x+1}=\frac12\) 存在 ⇒ removable。<br>\(x=-1\)：右极限 \(+\infty\)，左极限 \(-\infty\) ⇒ infinite（垂直渐近线）。`],
+  [R`\(s(x)=\begin{cases}\frac{\sin3x}{x},&x\ne0\\c,&x=0\end{cases}\)。求使 \(s\) 在 0 连续的 \(c\)。`,R`\(\lim_{x\to0}\frac{\sin3x}{x}=3\)，所以 \(c=3\)。`]]}
+]
+};
+/* ===================== HISTORY CONTENT ===================== */
+const HIST={
+scope:"Scope = all 11 PPTs: Units 1 &amp; 2 (1200–1450), Unit 3.1–3.3 (land empires 1450–1750), Unit 4.1–4.2 (exploration). SAQ 每小问 2 分，单位时间得分最高。",
+saq:`
+<div>
+<h3>Exam format &amp; time plan</h3>
+<div class="tbl"><table>
+<tr><th>Section</th><th>Count</th><th>Points</th><th>Time</th></tr>
+<tr><td>Previous-knowledge MCQ</td><td>10</td><td>10 (1 each)</td><td>8 min</td></tr>
+<tr><td>AP-style stimulus MCQ</td><td>15</td><td>30 (2 each)</td><td>25 min</td></tr>
+<tr><td>SAQ: pick 2 of 3, parts A/B/C</td><td>6 parts</td><td>12 (2 each)</td><td>40 min (20 per SAQ)</td></tr>
+<tr><td>Bonus SAQ (the one you skipped)</td><td>3 parts</td><td>bonus</td><td>12 min</td></tr>
+<tr><td>Check</td><td></td><td></td><td>5 min</td></tr>
+</table></div>
+<ul style="margin-top:10px">
+<li><b>Previous-knowledge MCQ</b> 考记忆：人名、年代、“which empire did X”。用「年代自测」和「对比」两页。</li>
+<li><b>AP-style MCQ</b> 给材料（文字 / 地图 / 图片）。先读题干再读材料；正确答案通常是<mark>大的历史进程</mark>，不是你恰好知道的细节。</li>
+<li><b>SAQ 选题</b>：选每一问都能在 30 秒内说出具体例子的两道。Bonus 最后写，有时间才写。</li>
+</ul>
+</div>
+<div>
+<h3>你丢分的原因</h3>
+<div class="grid2">
+<div class="alert"><b>14 Oct 丢 1 分。</b>B 和 C 只写了笼统概念（“feudalism”“kept their religion”），没有具体例子和解释。满分的答案都有 <b>named example + mechanism</b>。</div>
+<div class="note"><b>Checklist before moving on</b><br>在年代范围内？有专有名词？有 “because” 或 “which led to”？重复了题目的关键动词？</div>
+</div>
+</div>
+<div>
+<h3>TEA：Topic – Evidence – Analysis，每部分一句</h3>
+<div class="tbl"><table>
+<tr><th>句</th><th>写什么</th><th>例句</th></tr>
+<tr><td class="why">T</td><td>复述题目，在年代内点名你的具体例子</td><td>One way Ottoman rulers consolidated power from 1450 to 1750 was the devshirme system.</td></tr>
+<tr><td class="why">E</td><td>怎么运作的，带专有名词 / 地点 / 年份</td><td>Christian boys from the Balkans were converted to Islam and trained as Janissaries or bureaucrats.</td></tr>
+<tr><td class="why">A</td><td>用 “because” / “which led to” 和题目关键动词解释为什么回答了题目</td><td>Because they owed everything to the sultan, this <i>consolidated</i> his power over hereditary nobles.</td></tr>
+</table></div>
+</div>
+<div>
+<h3>手写 SAQ 练习的修改</h3>
+<div class="tbl"><table>
+<tr><th>Part</th><th>问题</th><th>改法</th></tr>
+<tr><td>B（Asia 文化交流）</td><td>日本采用汉字在 1200 年之前很久，超出时段；“Mix of language” 太模糊</td><td>用 1200–1450 内的例子：Chan → Zen Buddhism，或 Islam 传到东南亚</td></tr>
+<tr><td>C（Islam 传播的影响）</td><td>Arabic numerals 来自印度、经伊斯兰学者传播；Golden Age 大多在 1258 年前；“the whole world uses it” 说的是今天</td><td>用 Mali / Timbuktu 或 Delhi Sultanate，影响要在时段内</td></tr>
+<tr><td>两题</td><td>“it's” → “its”；“innovated” → “developed / transmitted”；“Mathmatics” → “Mathematics”</td><td>会重复用的名词先拼对</td></tr>
+</table></div>
+</div>
+<div>
+<h3>范文</h3>
+<div class="qlist">
+<div class="note"><b>Model B</b>　One piece of evidence of cultural exchange in Asia from 1200 to 1450 is the spread of Chan Buddhism from China to Japan, where it became Zen Buddhism. Japanese monks who studied in Song China brought back Chan's focus on meditation, and it blended with local traditions and was adopted by the samurai class. This shows cultural exchange because a religious practice moved between East Asian societies and was adapted into a new syncretic form.</div>
+<div class="note" style="margin-top:16px"><b>Model C</b>　One major impact of the spread of Islam from 1200 to 1450 was the growth of Islamic learning in the Mali Empire. After Mansa Musa's pilgrimage to Mecca (1324–25), he brought back scholars and architects, and Timbuktu became a center of Islamic scholarship with mosques and schools. This shows that Islam connected West Africa to Dar al-Islam, increasing Mali's prestige, trade ties and its rulers' legitimacy.</div>
+<div class="note" style="margin-top:16px"><b>Model（14 Oct part B，你得 0.5 的那题）</b>　One way political power was limited in medieval Europe was through feudalism. Kings granted fiefs to nobles in exchange for military service, so nobles controlled their own land and knights. Because kings depended on nobles for armies, they could not easily centralize power, as shown when English nobles forced King John to sign the Magna Carta (1215).</div>
+</div>
+</div>`,
+ref:`
+<details open><summary>Unit 1 · Regional states, 1200–1450</summary><div class="body">
+<p class="note">大规律：每个地区都用宗教给统治者合法性，区别在于<b>集权程度</b>。每个地区记住一个国家、一个权力来源、一个具体例子。</p>
+<div class="tbl"><table>
+<tr><th>Region</th><th>Key states</th><th>How power worked</th><th>Economy &amp; tech</th><th>Religion &amp; culture</th></tr>
+<tr><td>East Asia (1.1)</td><td>Song (960–1279), Yuan, Ming (1368–1644); Japan, Korea, Vietnam</td><td>Centralized: emperor + Mandate of Heaven; civil service exam picks scholar-officials by merit. Japan = decentralized feudal shogun + samurai</td><td>Commercialized economy; paper money; Grand Canal; Champa rice (2 harvests/yr → population boom); junks, compass, gunpowder, printing. Exports silk, porcelain, tea</td><td>Neo-Confucianism (Confucian + Buddhist + Daoist); filial piety; foot binding; Chan → Zen in Japan. Korea/Japan/Vietnam adapt Chinese writing &amp; Confucian government</td></tr>
+<tr><td>Dar al-Islam (1.2)</td><td>Abbasid Caliphate (750–1258, Baghdad); Seljuks, Delhi Sultanate, Mamluks</td><td>Abbasids fragment; new Turkic Muslim states keep Islamic law (Sharia)</td><td>Caravans &amp; caravanserai; Baghdad, Samarkand, Kashgar hubs</td><td>House of Wisdom; Al-Khwarizmi (algebra); Arabic numerals with zero spread via Islamic scholars; astrolabe; Ibn Battuta; Sufi missionaries; women could own property &amp; trade</td></tr>
+<tr><td>South &amp; SE Asia (1.3)</td><td>Delhi Sultanate; Vijayanagara (Hindu); Khmer (Angkor Wat); Majapahit (Java); Sultanate of Malacca</td><td>Centralized divine kings; Malacca taxes ships in the Strait</td><td>Indian Ocean ports (Calicut, Malacca); monsoon winds; dhow &amp; junk; bananas → Africa, sugarcane → Europe, citrus → Mediterranean</td><td>Caste; Angkor Wat (Hindu → Buddhist); Borobudur; Great Mosque of Demak; Islam spreads by merchants &amp; Sufis</td></tr>
+<tr><td>Americas (1.4)</td><td>Aztec/Mexica (Tenochtitlán); Inca (Cusco); Maya; Cahokia</td><td>Aztec = decentralized Triple Alliance, tribute, indirect rule. Inca = centralized bureaucracy, 4 provinces</td><td>Aztec chinampas, causeways. Inca quipu, 25,000-mile roads, mit'a labor, terraces. No wheel, no iron</td><td>Polytheistic, sun god; Aztec human sacrifice; Maya zero, calendar; isolated from Afro-Eurasia</td></tr>
+<tr><td>Africa (1.5)</td><td>Mali (c.1230–1600); Swahili city-states (Kilwa, Mombasa, Zanzibar); Great Zimbabwe; Ethiopia; Igbo</td><td>Mali centralized, taxes trans-Saharan trade. Swahili = independent ports. Igbo = no king, kinship rule</td><td>Gold, salt, ivory, slaves; camel saddle; Zimbabwe exports gold via Swahili coast</td><td>Mansa Musa's hajj (1324–25); Timbuktu; Swahili = Bantu + Arabic; Ethiopia = Christian kingdom</td></tr>
+<tr><td>Europe (1.6)</td><td>England, France, HRE, Spain (Reconquista); Byzantium</td><td>Decentralized feudalism: fiefs for military service; Magna Carta limits the king</td><td>Manorialism, serfs; heavy plow, three-field system; self-sufficient</td><td>Catholic Church unifies; Scholasticism; Gothic cathedrals; Jews persecuted; al-Andalus coexistence</td></tr>
+</table></div>
+<p style="margin-top:10px"><b>Black Death (1340s–1350s)</b>：killed ~1/3 of Europe → labor shortage → higher wages, serfdom weakens → Peasants' Revolt (1381) → Church authority questioned → kings centralize (after Hundred Years' War).</p>
+</div></details>
+
+<details open><summary>Unit 2 · Networks of exchange &amp; the Mongols</summary><div class="body">
+<p>三条贸易网络连接 Afro-Eurasia；Mongols 让陆路空前安全，货物、宗教、技术、疾病都沿着它流动。</p>
+<div class="tbl"><table>
+<tr><th></th><th>Silk Roads</th><th>Indian Ocean</th><th>Trans-Saharan</th></tr>
+<tr><td>Links</td><td>China ↔ Central Asia ↔ Middle East ↔ Europe</td><td>East Africa, Arabia, India, SE Asia, China</td><td>West Africa ↔ North Africa / Mediterranean</td></tr>
+<tr><td>Goods</td><td>Luxury only (silk, porcelain, tea) — land travel is costly</td><td>Luxury + bulk (spices, textiles, timber, rice) — ships are cheap</td><td>Gold, salt, ivory, slaves</td></tr>
+<tr><td>Tech</td><td>Caravans, caravanserai, paper money, Yam relay stations</td><td>Monsoon knowledge, dhow, junk, lateen sail, compass, astrolabe</td><td>Camel saddle, caravans</td></tr>
+<tr><td>States that profited</td><td>Song, Abbasids, Mongol khanates</td><td>Malacca, Calicut, Swahili city-states, Ming (Zheng He)</td><td>Mali (Timbuktu, Gao), later Songhai</td></tr>
+<tr><td>Cultural effect</td><td>Buddhism, Islam, Christianity spread; gunpowder &amp; paper go west</td><td>Diasporic merchant communities → Swahili; Islam in SE Asia &amp; East Africa</td><td>Islam spreads to West Africa; Timbuktu center of learning</td></tr>
+</table></div>
+<h4>Mongol Empire (1206–c.1368)</h4>
+<ul>
+<li><b>Rise</b>：Genghis Khan unites tribes 1206. 心理战：投降免死，抵抗屠城（Baghdad 1258 ends the Abbasids）。</li>
+<li><b>4 khanates by 1294</b>：Yuan (China, Kublai), Ilkhanate (Persia), Golden Horde (Russia), Chagatai (Central Asia)。</li>
+<li><b>How they governed</b>：local officials &amp; Persian bureaucracy；religious tolerance（Ilkhan rulers later convert to Islam）；adopted Chinese gunpowder。</li>
+<li><b>Pax Mongolica</b>：secure Silk Roads, Yam system, Marco Polo serves Kublai。</li>
+<li><b>Diffusion</b>：gunpowder, paper, printing, compass go west；Black Death along Mongol routes to Black Sea (1340s) → Europe (1347)。</li>
+<li><b>Fall</b>：khanates fight each other；Yuan → Ming (1368)；Golden Horde loses Russia (Ivan III, 1480)。</li>
+</ul>
+<p><b>Ming &amp; Zheng He (1405–1433)</b>：state-funded voyages to East Africa for tribute &amp; prestige, not profit。对比 Song 的私人商人贸易。</p>
+</div></details>
+
+<details open><summary>Unit 3 · Land-based empires, 1450–1750</summary><div class="body">
+<p>火药帮助扩张（3.1）；维持帝国靠官僚、忠诚军队、税收和合法性（3.2）；宗教既统一又分裂（3.3）。</p>
+<div class="tbl"><table>
+<tr><th>Empire</th><th>Founded / key event</th><th>Religion</th><th>Control &amp; legitimacy</th><th>Revenue</th></tr>
+<tr><td>Ottoman</td><td>Mehmed II takes Constantinople 1453 with cannons; Suleiman (1520–66)</td><td>Sunni</td><td>Devshirme → Janissaries / bureaucrats; millet system lets Christians/Jews run own affairs</td><td>Tax farming; jizya on non-Muslims</td></tr>
+<tr><td>Safavid</td><td>Shah Ismail I, 1501 (Persia)</td><td>Twelver Shia</td><td>Shia identity vs Sunni Ottomans; lose Chaldiran 1514 to Ottoman guns</td><td>—</td></tr>
+<tr><td>Mughal</td><td>Babur (descendant of Genghis) beats Delhi Sultanate with artillery; Akbar expands</td><td>Muslim rulers, Hindu majority</td><td>Akbar abolishes jizya (1564), hires Hindus; Taj Mahal</td><td>Zamindars collect land tax</td></tr>
+<tr><td>Qing</td><td>Manchus take Beijing 1644; Qianlong adds Mongolia, Tibet, Xinjiang</td><td>—</td><td>Imperial portraits</td><td>(Ming: taxes in silver)</td></tr>
+<tr><td>Songhai</td><td>Replaces Mali; Gao, Timbuktu</td><td>Islam</td><td>Falls to Morocco's guns at Tondibi, 1591</td><td>Gold/salt trade</td></tr>
+<tr><td>Tokugawa Japan</td><td>Shogunate from 1603</td><td>—</td><td>Shogun rules, emperor ceremonial; controls daimyo; samurai become salaried officials</td><td>—</td></tr>
+<tr><td>France (Louis XIV)</td><td>Absolutism</td><td>Catholic</td><td>Divine right; Versailles keeps nobles watched</td><td>—</td></tr>
+<tr><td>Inca / Aztec</td><td>(Unit 1)</td><td>Sun god</td><td>Sapa Inca = son of Inti; Temple of the Sun</td><td>Aztec tribute; Inca mit'a</td></tr>
+</table></div>
+<h4>3.3 Belief systems</h4>
+<ul>
+<li><b>Protestant Reformation</b>：Luther's 95 Theses (1517) attack indulgences；faith alone, Bible over pope；spreads via printing press；rulers use it to escape Church power。</li>
+<li><b>Counter-Reformation</b>：Council of Trent (1545–63) reaffirms faith + good works；Jesuits run schools &amp; missions。</li>
+<li><b>Sunni–Shia split hardens</b> through Ottoman–Safavid rivalry。</li>
+<li><b>Sikhism</b>：Guru Nanak, late 1400s, Punjab；one God, equality, rejects caste；Golden Temple at Amritsar；conflict with Mughals militarizes Sikhs。</li>
+</ul>
+</div></details>
+
+<details open><summary>Unit 4.1–4.2 · Age of Exploration</summary><div class="body">
+<p>欧洲人想绕开 Ottoman 控制的亚洲贸易，动机是 <b>God, Gold, Glory</b>，靠借来并改进的技术做到。</p>
+<ul>
+<li><b>Borrowed tech</b>：compass (China)、astrolabe (Islamic world)、lateen sail、Islamic cartography。</li>
+<li><b>New tech</b>：Portuguese caravel（小、灵活）、Spanish carrack（大货舱）；trade winds（向西）&amp; westerlies（返回）。</li>
+</ul>
+<div class="tbl"><table>
+<tr><th>State</th><th>Key voyages</th><th>Type of empire</th></tr>
+<tr><td>Portugal</td><td>Henry the Navigator; Dias rounds Africa 1488; da Gama reaches India 1498</td><td>Trading-post empire: fortified coastal ports, naval power, spice trade</td></tr>
+<tr><td>Spain</td><td>Columbus (Ferdinand &amp; Isabella) 1492; Magellan's crew 1519–1522</td><td>Territorial, extractive empire in the Americas (silver, crops)</td></tr>
+<tr><td>England, France, Netherlands</td><td>Later</td><td>England: settler farms; France: fur trade + Native alliances; Dutch: trading posts in SE Asia</td></tr>
+</table></div>
+<p style="margin-top:8px"><b>Treaty of Tordesillas (1494)</b>：Spain 和 Portugal 沿大西洋一条线分新土地 → Portugal gets Brazil。</p>
+</div></details>`,
+evidence:`
+<p class="scope" style="margin:0">每类常见题型两个现成例子：<b>named thing + how it worked + effect</b>。第一列（题型 → 例子）背熟，之前就是这里丢的分。</p>
+<div class="tbl"><table>
+<tr><th>Prompt type</th><th>Evidence 1</th><th>Evidence 2</th></tr>
+<tr><td>Cultural exchange via trade (Asia)</td><td>Chan Buddhism from China becomes Zen in Japan (1200s)</td><td>Islam spreads to SE Asia via merchants &amp; Sufis at Malacca; Great Mosque of Demak</td></tr>
+<tr><td>Technology diffusion</td><td>Gunpowder: China → Middle East → Europe via Mongol Silk Roads → gunpowder empires</td><td>Compass (China) + astrolabe (Islamic) → used by Portuguese/Spanish explorers</td></tr>
+<tr><td>Agriculture / environment</td><td>Champa rice from Vietnam → 2 harvests/yr → Song population &amp; cities grow</td><td>Bananas to East Africa via Indian Ocean → population growth; Aztec chinampas</td></tr>
+<tr><td>Geography → economy (Africa)</td><td>Mali controls trans-Saharan gold-salt routes, taxes caravans → Mansa Musa's wealth</td><td>Swahili ports + monsoon winds link interior gold/ivory to Indian Ocean</td></tr>
+<tr><td>Effects of spread of Islam</td><td>Mali rulers adopt Islam; Timbuktu center of Islamic learning</td><td>Delhi Sultanate brings Islamic rule to N. India; Swahili language &amp; mosques</td></tr>
+<tr><td>Power limited / divided (Europe)</td><td>Feudalism: nobles keep own armies on fiefs, kings depend on them</td><td>Magna Carta (1215) makes the English king subject to law</td></tr>
+<tr><td>Mongol rule of conquered peoples</td><td>Ilkhanate lets Muslims keep Islam &amp; uses Persian bureaucrats → less resistance</td><td>Yuan uses foreign officials; Yam relay system</td></tr>
+<tr><td>State centralization</td><td>Song civil service exam → merit-based loyal officials</td><td>Inca provincial officials, quipu census, mit'a labor</td></tr>
+<tr><td>Legitimizing rule</td><td>Louis XIV divine right + Versailles</td><td>Sapa Inca as son of Inti; Mughal Taj Mahal; Mansa Musa's hajj</td></tr>
+<tr><td>Consolidating rule</td><td>Ottoman devshirme → Janissaries loyal only to sultan</td><td>Tokugawa controls daimyo; Mughal zamindars collect taxes</td></tr>
+<tr><td>Religious tolerance / conflict</td><td>Ottoman millet system; Akbar abolishes jizya 1564</td><td>Ottoman (Sunni) vs Safavid (Shia), Chaldiran 1514; Reformation splits Europe</td></tr>
+<tr><td>Causes of European exploration</td><td>Bypass Ottoman middlemen for spices (Gold)</td><td>Caravel + astrolabe; state sponsorship (Henry, Ferdinand &amp; Isabella)</td></tr>
+<tr><td>Effects of Black Death</td><td>Labor shortage → higher wages → serfdom declines</td><td>Peasants' Revolt 1381; Church authority questioned</td></tr>
+</table></div>`,
+compare:`
+<p class="scope" style="margin:0">AP MCQ 爱考 “which is the best comparison” 和 “which caused”。这些对比直接来自 PPT。</p>
+<div class="tbl"><table>
+<tr><th>Comparison</th><th>Similarity</th><th>Difference</th></tr>
+<tr><td>Aztec vs Inca</td><td>Polytheistic, sun god, divine rulers, large infrastructure</td><td>Aztec decentralized tribute; Inca centralized bureaucracy + mit'a</td></tr>
+<tr><td>Song China vs feudal Europe</td><td>Agricultural societies with hierarchy</td><td>China centralized, commercial, paper money; Europe decentralized, manorial, self-sufficient</td></tr>
+<tr><td>Mali vs Swahili states</td><td>Both Muslim, rich from trade</td><td>Mali centralized land empire; Swahili independent ports</td></tr>
+<tr><td>Silk Roads vs Indian Ocean</td><td>Both spread religion and tech</td><td>Silk Roads luxury only; Indian Ocean also bulk, cheaper</td></tr>
+<tr><td>Song trade vs Zheng He</td><td>Both made China central to trade</td><td>Song private merchants; Zheng He state-funded tribute missions</td></tr>
+<tr><td>Portugal vs Spain empires</td><td>Both Catholic, God/Gold/Glory</td><td>Portugal coastal trading posts; Spain territorial conquest</td></tr>
+<tr><td>Ottoman vs Safavid</td><td>Both Muslim gunpowder empires</td><td>Sunni vs Shia; rivals at Chaldiran</td></tr>
+<tr><td>Ottoman vs Mughal tolerance</td><td>Both ruled non-Muslim subjects</td><td>Ottomans collect jizya + millets; Akbar abolishes jizya</td></tr>
+<tr><td>Japan vs Europe feudalism</td><td>Land for military service, warrior class</td><td>Shogun/samurai vs king/knights; Japan's emperor symbolic</td></tr>
+</table></div>`,
+dates:[["1206","Genghis Khan unites Mongols"],["1215","Magna Carta"],["1258","Mongols sack Baghdad; Abbasids end"],["1324–25","Mansa Musa's hajj"],["1347","Black Death reaches Europe"],["1368","Ming replaces Yuan"],["1405–1433","Zheng He's voyages"],["1453","Ottomans take Constantinople"],["1488 / 1498","Dias rounds Africa / da Gama reaches India"],["1492","Columbus reaches the Caribbean"],["1494","Treaty of Tordesillas"],["1501","Safavid Empire founded"],["1514","Battle of Chaldiran"],["1517","Luther's 95 Theses"],["1519–1522","Magellan expedition circumnavigates"],["1545–1563","Council of Trent"],["1564","Akbar abolishes jizya"],["1591","Morocco defeats Songhai (Tondibi)"],["1603","Tokugawa shogunate"],["1644","Qing take Beijing"]],
+prompts:["Explain one way rulers legitimized power in land-based empires, 1450–1750.","Explain one way rulers consolidated power, 1450–1750.","Explain one technological cause of European exploration.","Explain one difference between the Portuguese and Spanish empires.","Explain one way religion caused conflict, 1450–1750.","Explain one effect of the Mongol Empire on Afro-Eurasian trade.","Explain one similarity between the Aztec and Inca states.","Explain one effect of the Black Death on European society."]
+};
+/* ===================== CSA CONTENT ===================== */
+const C=s=>`<code>${s}</code>`;
+const CSA={
+scope:"范围 = Unit 1 全部 + Unit 2 的 selection（if/else）和 while 循环。for 循环、数组、类的编写不考。建议顺序：错题陷阱 → 自测 → 错哪节回看速查。代码追踪题一律画变量表，不要心算。",
+mistakes:R`
+<div>
+<h3>错题陷阱清单（12 条，都来自你的错题）</h3>
+<p class="scope" style="margin:0 0 10px">考前最后一遍只看这张表。</p>
+<div class="tbl"><table>
+<tr><th>#</th><th>陷阱</th><th>正确理解</th><th>来源</th></tr>
+<tr><td>1</td><td><code>int z = x; x = y; y = z;</code></td><td>这是<b>交换</b> x 和 y，不是「都变成 x」</td><td>Assignment Q2</td></tr>
+<tr><td>2</td><td><code>temp = x;</code> 后面接什么</td><td><code>x = y; y = temp;</code>；先写 <code>y = x</code> 会丢掉 y</td><td>Assignment Q3</td></tr>
+<tr><td>3</td><td><code>str += str + 0 + 8</code></td><td>= <code>str = str + str + 0 + 8</code>，得 <code>"0008"</code></td><td>StringCreation Q1</td></tr>
+<tr><td>4</td><td><code>one + two + zee</code></td><td>从左到右：1+2=3 先算，再拼 "Z" → <code>"3Z"</code></td><td>StringCreation Q2</td></tr>
+<tr><td>5</td><td><code>double num = 9 / 4;</code></td><td>先整数除法得 2，再变 <b>2.0</b></td><td>Casting Q6</td></tr>
+<tr><td>6</td><td>print + println() 混用</td><td><code>println()</code> 单独换行；最后的 <code>print</code> 不换行</td><td>Expression Q7</td></tr>
+<tr><td>7</td><td>对 null 调方法</td><td><code>NullPointerException</code>，第一个调用就停止，什么都不打印</td><td>usingObject Q6</td></tr>
+<tr><td>8</td><td>class / attribute / instance</td><td>vehicle 是 Car 的实例；color 是 vehicle 的属性</td><td>AnotherUsingObjects Q9</td></tr>
+<tr><td>9</td><td>连续的 <code>if ... return</code></td><td><code>input &lt; 10</code> 先拦截，<code>&lt; 1</code> 的分支永远到不了 → never "gamma"</td><td>Boolean Q7</td></tr>
+<tr><td>10</td><td>嵌套 if 等价</td><td>列情况表逐项核对（见速查第 4 节）</td><td>Boolean Q9</td></tr>
+<tr><td>11</td><td>数位计数的条件</td><td><code>num != 0</code>；<code>num &gt;= 0</code> 无限循环，<code>count &gt; 0</code> 一次不跑</td><td>while Q9</td></tr>
+<tr><td>12</td><td>void 方法的用法</td><td>只能 <code>p.totalAmount();</code>；不能赋值、不能放进 print、不能用类名调</td><td>Review Q8、First monthly</td></tr>
+</table></div>
+</div>
+<div>
+<h3>Review 里另外 3 题的结论</h3>
+<div class="grid2">
+<div class="note"><b>Q15</b>　循环里每次匹配都覆盖 <code>num = k</code>，所以返回的是 check <b>最后一次</b>出现的下标。</div>
+<div class="note"><b>Q18</b>　<code>(x &gt;= y) &amp;&amp; !(x &lt; y)</code> 就是 <code>x &gt;= y</code>，答案 Only when x &gt;= y。</div>
+<div class="note"><b>Q20</b>　由 De Morgan，<code>b = !(x || y &lt;= 50000) = !x &amp;&amp; y &gt; 50000 = a</code>，所以一定打印 First；c 与 d 不总相等。</div>
+</div>
+</div>
+<div>
+<h3>作业得分与优先级</h3>
+<div class="tbl"><table>
+<tr><th>作业</th><th>得分</th><th>错题考点</th><th>优先级</th></tr>
+<tr><td>Assignment Statements and Input Quiz</td><td>1/3</td><td>赋值按顺序执行、用 temp 交换两个变量（2 题都错）</td><td><mark>高</mark></td></tr>
+<tr><td>G10_StringCreation</td><td>4/6</td><td><code>+=</code> 展开、拼接从左到右</td><td><mark>高</mark></td></tr>
+<tr><td>Boolean</td><td>8/10</td><td>if 顺序截断、嵌套 if 等价</td><td><mark>高</mark></td></tr>
+<tr><td>G10_review</td><td>29/35</td><td>void 调用、De Morgan、String 遍历</td><td><mark>高</mark></td></tr>
+<tr><td>while / usingObject / AnotherUsingObjects</td><td>9/10</td><td>数位循环条件、对 null 调方法、属性 vs 实例</td><td>中</td></tr>
+<tr><td>Casting / Expression</td><td>11/12、14/15</td><td><code>9 / 4</code> 先整除、print vs println</td><td>中</td></tr>
+<tr><td>StringMethods / Compound</td><td>满分</td><td>—</td><td>低</td></tr>
+</table></div>
+</div>`,
+ref:R`
+<details open><summary>1 · 变量、表达式、类型转换</summary><div class="body">
+<p class="note">结果类型由<b>当前这一步运算的操作数</b>决定，不由接收变量决定。这是 Unit 1 最常考的一条。</p>
+<h4>类型</h4>
+<div class="tbl"><table>
+<tr><th>类型</th><th>分类</th><th>例子</th><th>要点</th></tr>
+<tr><td><code>int</code></td><td>primitive</td><td>17</td><td>范围约 ±21 亿，超出会 overflow（不报错）</td></tr>
+<tr><td><code>double</code></td><td>primitive</td><td>3.0</td><td>有舍入误差，<code>0.1+0.2 != 0.3</code></td></tr>
+<tr><td><code>boolean</code></td><td>primitive</td><td>true</td><td>只有 true/false</td></tr>
+<tr><td><code>String</code></td><td>reference</td><td>"Hi"</td><td>存的是对象的引用</td></tr>
+</table></div>
+<ul style="margin-top:8px"><li><code>final double TAX = 0.08;</code> 常量不能再赋值，否则编译错误。</li><li>局部变量未赋值就使用 → 编译错误；变量出了 <code>{ }</code> 就不可访问（scope）。</li></ul>
+<h4>整数除法与 %</h4>
+<div class="tbl"><table>
+<tr><th>表达式</th><th>值</th></tr>
+<tr><td><code>7 / 2</code></td><td>3</td></tr>
+<tr><td><code>-7 / 2</code></td><td>-3（向零截断）</td></tr>
+<tr><td><code>7 / 2.0</code></td><td>3.5</td></tr>
+<tr><td><code>7 % 2</code> / <code>-7 % 2</code></td><td>1 / -1</td></tr>
+<tr><td><code>double d = 9 / 4;</code></td><td><mark>2.0</mark>（先算 int 的 2）</td></tr>
+<tr><td><code>int / 0</code></td><td>ArithmeticException（运行时错误）</td></tr>
+</table></div>
+<p style="margin-top:8px">优先级：括号 → 强制转换 / 一元 → <code>* / %</code> → <code>+ -</code>，同级从左到右。<code>1 + 5 % 3 = 3</code>。</p>
+<h4>Casting</h4>
+<ul><li>int → double 自动；double → int 必须写 <code>(int)</code>，向零截断：<code>(int) -5.99 = -5</code>。</li>
+<li>位置决定结果：<code>(double) 10 / 3</code> ≈ 3.333；<code>(double) (10 / 3)</code> = 3.0。</li>
+<li>四舍五入：正数 <code>(int)(x + 0.5)</code>，负数 <code>(int)(x - 0.5)</code>。</li></ul>
+<h4>复合赋值与自增</h4>
+<ul><li><code>x += e</code> 等于 <code>x = x + (e)</code>。<code>str += str + 0 + 8</code> → <code>"0" + "0" + 0 + 8 = "0008"</code>。</li>
+<li><code>x++</code> 在表达式里先用旧值：<code>int y = x++;</code> 后 y 是旧值。</li></ul>
+<h4>赋值按顺序执行：交换两个变量</h4>
+<p>每条赋值用的是「此刻」的值，覆盖后旧值就没了。交换必须先存一份：</p>
+<pre class="code">int temp = x;
+x = y;
+y = temp;   // x、y 互换</pre>
+<ul><li>只写 <code>x = y; y = x;</code> → 两个都变成 y 的原值。</li>
+<li>三行顺序不能乱：第二行必须覆盖那个已备份的变量（x）。</li>
+<li>赋值方向固定为右 → 左：<code>pi * r * r = baseArea;</code> 是编译错误。</li></ul>
+<h4>字符串拼接与输出</h4>
+<div class="tbl"><table>
+<tr><th>表达式</th><th>结果</th></tr>
+<tr><td><code>1 + 2 + "Z"</code></td><td>"3Z"</td></tr>
+<tr><td><code>"Z" + 1 + 2</code></td><td>"Z12"</td></tr>
+<tr><td><code>"Z" + (1 + 2)</code></td><td>"Z3"</td></tr>
+</table></div>
+<ul style="margin-top:8px"><li>拼接不加空格。<code>print</code> 不换行，<code>println</code> 换行，<code>println()</code> 只换行。</li>
+<li>转义：<code>\n</code> 换行、<code>\t</code> 制表、<code>\"</code> 双引号、<code>\\</code> 反斜杠。</li></ul>
+<h4>三种错误</h4>
+<div class="tbl"><table>
+<tr><th>类型</th><th>例子</th></tr>
+<tr><td>编译错误</td><td>少分号、类型不匹配、<code>int x = 2.5;</code>、<code>String s = voidMethod();</code>、<code>double other = null;</code>（基本类型不能是 null）</td></tr>
+<tr><td>运行时错误</td><td>除以 0、对 null 调方法、substring 越界</td></tr>
+<tr><td>逻辑错误</td><td>能运行但结果错，如 <code>if (x &gt; 0);</code> 多了分号</td></tr>
+</table></div>
+<ul style="margin-top:8px"><li>前置条件（precondition）题：找「刚好能避免问题」的条件。<code>5 / y</code> → <code>y != 0</code>；<code>x * x * y &gt; 0</code> → <code>x != 0</code> 且 <code>y &gt; 0</code>。</li>
+<li>double 有舍入误差：<code>(a + b) * (a - b) != a * a - b * b</code> 可能为 true。</li></ul>
+</div></details>
+
+<details open><summary>2 · 对象与方法调用</summary><div class="body">
+<p class="note">先看方法头：有没有 <code>static</code>、返回类型是什么、参数的数量 / 顺序 / 类型。调用题几乎都能靠这三点判断。</p>
+<h4>类、属性、实例</h4>
+<ul><li>类（class）是蓝图；属性（attribute）是类定义的数据项（color, year）；实例（instance）是 new 出来的具体对象（red, 2003, Ford）。</li>
+<li><code>Triangle b = a;</code> 不复制对象，a、b 指向同一个对象（aliasing）。</li>
+<li><code>Triangle t = null; t.perimeter();</code> → NullPointerException，这一行终止，后面都不执行。</li></ul>
+<h4>构造器、private 与引用</h4>
+<ul><li>创建对象必须用 new：<code>Player p = Player(true, 5);</code> 编译错误。</li>
+<li>实参必须在数量、类型、顺序上匹配某个构造器：<code>new Student("Juan", "15")</code> 错（"15" 是 String），<code>new WindTurbine(3.25)</code> 错（double 不能传给 int）。</li>
+<li>调用时只写值：<code>new Sample(10, 6.2)</code> 对，<code>new Sample(int x, double y)</code> 错。</li>
+<li>private 属性类外不能直接访问：<code>obj.myA</code> 编译错误，要用 <code>obj.getA()</code>。</li>
+<li><code>dog2 = dog1; dog1 = new Dog("Fido", 60);</code> → dog1 指向新对象，dog2 仍指向原来的 Rex。</li></ul>
+<h4>static vs 实例方法</h4>
+<div class="tbl"><table>
+<tr><th></th><th>类方法 (static)</th><th>实例方法</th></tr>
+<tr><td>方法头</td><td>有 static</td><td>没有 static</td></tr>
+<tr><td>调用</td><td><code>ClassName.method()</code></td><td><code>obj.method()</code></td></tr>
+<tr><td>例子</td><td><code>Math.sqrt(16.0)</code></td><td><code>c.getArea()</code>、<code>s.length()</code></td></tr>
+</table></div>
+<p style="margin-top:8px"><code>Purchase.totalAmount();</code> → 错，实例方法不能用类名调用。</p>
+<h4>void vs 有返回值</h4>
+<ul><li>void 方法只能单独成一句 <code>p.totalAmount();</code>。<code>String s = voidMethod();</code> 和 <code>println(voidMethod())</code> 都是编译错误。</li>
+<li>「打印」≠「返回」。题干说 displays / prints → 直接调用；说 returns → 用变量接住或放进 print。</li>
+<li>有返回值的方法单独调用也合法，只是返回值被丢弃。</li></ul>
+<h4>参数与重载</h4>
+<ul><li>基本类型按值传递：方法里改形参，调用者的变量不变。</li>
+<li>签名 = 方法名 + 参数类型列表。只改返回类型或参数名不算重载。</li>
+<li><code>double x = m(2, false)</code> 合法；<code>m(2.5, false)</code> 错（double 不会自动变 int）；返回 double 的方法不能直接赋给 int。</li></ul>
+<h4>Math 类</h4>
+<div class="tbl"><table>
+<tr><th>方法</th><th>返回</th><th>例子</th></tr>
+<tr><td><code>Math.abs(x)</code></td><td>与 x 同类型</td><td><code>Math.abs(-5) = 5</code></td></tr>
+<tr><td><code>Math.pow(a, b)</code></td><td>double</td><td><code>Math.pow(2, 3) = 8.0</code></td></tr>
+<tr><td><code>Math.sqrt(x)</code></td><td>double</td><td><code>Math.sqrt(9) = 3.0</code></td></tr>
+<tr><td><code>Math.random()</code></td><td>double，[0.0, 1.0)</td><td>—</td></tr>
+</table></div>
+<p style="margin-top:8px">随机整数 [min, max]：<code>(int) (Math.random() * (max - min + 1)) + min</code>。先乘再转；<code>(int) Math.random() * 6 + 1</code> 永远是 1。</p>
+</div></details>
+
+<details open><summary>3 · String 方法</summary><div class="body">
+<p>下标从 0 开始，最后一个是 <code>length() - 1</code>；substring <mark>左闭右开</mark>。以 <code>String s = "Java";</code> 为例（J=0, a=1, v=2, a=3）：</p>
+<div class="tbl"><table>
+<tr><th>调用</th><th>结果</th><th>说明</th></tr>
+<tr><td><code>s.length()</code></td><td>4</td><td></td></tr>
+<tr><td><code>s.substring(1, 3)</code></td><td>"av"</td><td>[1, 3)</td></tr>
+<tr><td><code>s.substring(2)</code></td><td>"va"</td><td>到末尾</td></tr>
+<tr><td><code>s.substring(4)</code></td><td>""</td><td>等于 length 合法，得空串</td></tr>
+<tr><td><code>s.substring(1, 5)</code></td><td>异常</td><td>StringIndexOutOfBoundsException</td></tr>
+<tr><td><code>s.indexOf("a")</code></td><td>1</td><td>第一次出现</td></tr>
+<tr><td><code>s.indexOf("a", 2)</code></td><td>3</td><td>从下标 2 开始找</td></tr>
+<tr><td><code>s.indexOf("x")</code></td><td>-1</td><td>找不到</td></tr>
+<tr><td><code>s.equals("java")</code></td><td>false</td><td>区分大小写</td></tr>
+<tr><td><code>s.compareTo("Jb")</code></td><td>负数</td><td>s 字典序在前 → 负；相等 → 0</td></tr>
+</table></div>
+<ul style="margin-top:8px"><li>取第 i 个字符（作为 String）：<code>s.substring(i, i + 1)</code>。</li>
+<li>不可变：<code>s.toUpperCase();</code> 不改 s，要写 <code>s = s.toUpperCase();</code>。</li>
+<li>比内容用 <code>.equals()</code>；<code>==</code> 比是否同一对象，也用来和 null 比。</li>
+<li><code>""</code> 有对象，length() = 0；<code>null</code> 没有对象，调方法就抛异常。</li>
+<li>对象和 String 拼接会自动调用 toString()；没重写时输出类似 <code>Car@4617c264</code>。</li>
+<li>窗口扫描：条件写 <code>k + len &lt;= str.length()</code>。每次匹配都覆盖 <code>num = k</code> → 得到<b>最后一次</b>出现；要第一次就立刻 <code>return k</code>。</li></ul>
+</div></details>
+
+<details open><summary>4 · Boolean 与 Selection</summary><div class="body">
+<p class="note">一串独立的 if 和一条 if / else if 链行为不同；但只要前面的分支 return 了，后面的就不会执行。先判断执行顺序，再算值。</p>
+<h4>运算符优先级（高 → 低）</h4>
+<div class="chips"><span class="chip">! 、强制转换</span><span class="chip">* / %</span><span class="chip">+ -</span><span class="chip">&lt; &lt;= &gt; &gt;=</span><span class="chip">== !=</span><span class="chip">&amp;&amp;</span><span class="chip">||</span></div>
+<p style="margin-top:8px">所以 <code>a || b &amp;&amp; c</code> = <code>a || (b &amp;&amp; c)</code>。</p>
+<h4>短路求值</h4>
+<ul><li><code>A &amp;&amp; B</code>：A 为 false → 不算 B。<code>A || B</code>：A 为 true → 不算 B。</li>
+<li><code>if (x != 0 &amp;&amp; 10 / x &gt; 2)</code>、<code>if (s != null &amp;&amp; s.length() &gt; 0)</code> 不会报错；顺序反过来就会异常。</li></ul>
+<h4>De Morgan</h4>
+<div class="eq">!(a &amp;&amp; b) ≡ !a || !b　　　!(a || b) ≡ !a &amp;&amp; !b</div>
+<p>取反比较符：<code>&lt;</code> ↔ <code>&gt;=</code>，<code>&gt;</code> ↔ <code>&lt;=</code>，<code>==</code> ↔ <code>!=</code>。例：<code>!(x &lt; 0 || x &gt; 2)</code> ≡ <code>x &gt;= 0 &amp;&amp; x &lt;= 2</code>。</p>
+<h4>if 的三种形态</h4>
+<div class="tbl"><table>
+<tr><th>写法</th><th>会执行几个分支</th></tr>
+<tr><td>多个独立 if</td><td>0 到全部，每个都检查</td></tr>
+<tr><td>if / else if / else</td><td>恰好 1 个，第一个为 true 的胜出</td></tr>
+<tr><td>if / else if（无 else）</td><td>0 或 1 个</td></tr>
+</table></div>
+<ul style="margin-top:8px"><li>条件顺序很重要：<code>if (x &lt; 10)</code> 写在 <code>if (x &lt; 5)</code> 前面并 return，后者永远轮不到。</li>
+<li>Dangling else：没有 <code>{ }</code> 时，else 配最近的未配对 if，缩进不算数。</li>
+<li>没有 <code>{ }</code> 时，if 只管紧跟的一条语句。</li>
+<li><code>if (cond);</code> → 分号是空分支体，下面的块无条件执行。</li></ul>
+<h4>College Board 常见变形</h4>
+<ul><li>独立 if 会覆盖：<code>if (grade &gt; 89) p = 4.0; if (grade &gt; 79) p = 3.0; ...</code> 对 95 最终得 3.0。改成 else-if 链才对。</li>
+<li>两个 boolean 可以用 <code>==</code> / <code>!=</code> 比较：<code>(x &gt; y) == (y &gt; z)</code> 表示 y 在 x 和 z 之间。</li>
+<li>按优先级算字面量：<code>false &amp;&amp; true || false</code> = false。</li>
+<li>选「哪个输入会出错」时用边界值试：闰年题里 1900 是 4 的倍数但不是闰年。</li>
+<li>先乘折扣再加固定费用：只对该打折的部分 <code>*= 0.9</code>，不打折的放在 if 外面。</li></ul>
+<h4>嵌套 if 等价题：列情况表</h4>
+<div class="tbl"><table>
+<tr><th>length &gt; 5</th><th>含 A</th><th>含 B</th><th>result</th></tr>
+<tr><td>是</td><td>否</td><td>—</td><td>1</td></tr>
+<tr><td>是</td><td>是</td><td>否</td><td>2</td></tr>
+<tr><td>是</td><td>是</td><td>是</td><td>0</td></tr>
+<tr><td>否</td><td>否</td><td>—</td><td>3</td></tr>
+<tr><td>否</td><td>是</td><td>—</td><td>0</td></tr>
+</table></div>
+<p style="margin-top:8px">用这 5 行逐个核对选项，不要靠「看起来像」。</p>
+</div></details>
+
+<details open><summary>5 · While 循环</summary><div class="body">
+<p class="note">AP 很少让你从零写循环，考的是追踪：输出什么、循环体执行几次、改一行会怎样。</p>
+<ul><li>四部分：init → condition（每次进入前检查，包括第一次）→ body → update。</li>
+<li>条件一开始就 false → 0 次。<mark>条件检查次数 = 循环体次数 + 1</mark>。</li></ul>
+<h4>追踪表：每次检查条件写一行</h4>
+<pre class="code">int i = 3;
+while (i &lt; 12) {
+    System.out.print(i + " ");
+    i += 4;
+}</pre>
+<div class="tbl" style="max-width:420px"><table>
+<tr><th>检查</th><th>i</th><th>i &lt; 12</th><th>输出</th></tr>
+<tr><td>1</td><td>3</td><td>true</td><td>3</td></tr>
+<tr><td>2</td><td>7</td><td>true</td><td>7</td></tr>
+<tr><td>3</td><td>11</td><td>true</td><td>11</td></tr>
+<tr><td>4</td><td>15</td><td>false</td><td>停</td></tr>
+</table></div>
+<p style="margin-top:8px">输出 <code>3 7 11</code>，循环体 3 次；循环后 i = 15。</p>
+<h4>三种坏循环</h4>
+<div class="tbl"><table>
+<tr><th>问题</th><th>代码</th><th>后果</th></tr>
+<tr><td>忘了 update</td><td><code>while (i &lt;= 5) { print(i); }</code></td><td>无限循环</td></tr>
+<tr><td>条件后多分号</td><td><code>while (i &lt;= 100);</code></td><td>无限循环且无输出</td></tr>
+<tr><td>条件写反</td><td><code>int i = 1; while (i &gt;= 5)</code></td><td>0 次，无提示</td></tr>
+</table></div>
+<h4>必会模式</h4>
+<ul><li>累加器在循环外声明：和与计数从 0 开始，乘积从 1 开始。</li>
+<li>平均值要除以 double：<code>sum / 100.0</code>。</li>
+<li>数位拆分：<code>num % 10</code> 取个位，<code>num / 10</code> 去个位，条件 <code>num != 0</code>。<code>num &gt;= 0</code> 会无限循环。</li>
+<li><code>while (n * n &lt; 1000) n++;</code> 结束时 n = 32。</li>
+<li><code>n = 10; while (n &gt; 0) n = n / 2;</code> → 10→5→2→1→0，4 次。</li>
+<li>双指针（回文）：<code>while (left &lt; right)</code>，用 &lt; 不用 !=。</li></ul>
+<h4>College Board 常见变形</h4>
+<ul><li>先 update 还是先 print：<code>num = 10; while (num &gt; 1) { num--; print(num); }</code> 打印 987654321；两行对调变成 1098765432。只看第一次和最后一次打印什么。</li>
+<li>哨兵循环（读到负数就停）：「读入 → 累乘」都在循环体里时，最后那个负数也会被乘进去。</li>
+<li>循环后的语句也要算：<code>count = 5; while (count &lt; 100) count *= 2; count += 1;</code> → 161。</li>
+<li>变量卡住不动：numOne = 128, numTwo = 4：128→32→8→2，2 % 4 != 0 不再更新，而 2 &gt; 1 一直 true → 无限循环。</li>
+<li>条件是 != 时想想会不会跳过。</li>
+<li><code>while (value % 5 == 0) value /= 2;</code> 从 100 → 50 → 25 → 12，停。</li></ul>
+<h4>While + String（Lab 12）不重叠计数</h4>
+<pre class="code">int count = 0, i = 0;
+while (i &lt;= s.length() - target.length()) {
+    if (s.substring(i, i + target.length()).equals(target)) {
+        count++;
+        i += target.length();
+    } else {
+        i++;
+    }
+}</pre>
+<ul><li>("aaaa", "aa") → 2；("banana", "ana") → 1。</li>
+<li>条件必须是 <code>&lt;=</code>；写成 <code>&lt;</code> 会漏掉最后一个窗口。</li>
+<li>另一种写法：<code>index = s.indexOf(target); while (index != -1) { count++; index = s.indexOf(target, index + target.length()); }</code></li>
+<li><code>i &lt;= s.length()</code> 配 <code>substring(i, i + 1)</code> → StringIndexOutOfBoundsException。</li></ul>
+</div></details>`,
+quiz:[
+ [R`<code>String str = "1"; str += str + 2 + 3;</code> str 是？`,R`<code>"1123"</code>（= "1" + "1" + 2 + 3）`],
+ [R`<code>4 + 5 + "X" + 4 + 5</code> 的结果？`,R`<code>"9X45"</code>`],
+ [R`<code>double d = 7 / 2 + 7 / 2.0;</code> d 是？`,R`6.5（3 + 3.5）`],
+ [R`<code>int x = 17; x %= 5; x *= x + 1;</code> x 是？`,R`6（17 % 5 = 2，2 × (2 + 1) = 6）`],
+ [R`<code>String s = "computer";</code> 求 <code>s.substring(3, 6)</code>、<code>s.indexOf("t")</code>、<code>s.indexOf("c", 1)</code>。`,R`<code>"put"</code>、5、-1`],
+ [R`n = 5：<code>if (n &gt; 3) r = "A"; else if (n &gt; 4) r = "B"; else r = "C";</code> r 是？`,R`"A"（第一个 true 就停）`],
+ [R`k = 5：三个独立的 <code>if (k &gt; 3) o += "A"; if (k &gt; 4) o += "B"; if (k &gt; 5) o += "C";</code>（o 初始为 ""），o 是？`,R`"AB"`],
+ [R`用 De Morgan 化简 <code>!(a &gt; 5 &amp;&amp; b &lt;= 3)</code>。`,R`<code>a &lt;= 5 || b &gt; 3</code>`],
+ [R`<code>int num = 40213, sum = 0; while (num != 0) { sum += num % 10; num /= 10; }</code> sum 是？`,R`10（3+1+2+0+4）`],
+ [R`<code>int i = 1, c = 0; while (i &lt; 50) { i *= 3; c++; }</code> 结束时 i、c？`,R`i = 81，c = 4（1→3→9→27→81）`],
+ [R`<code>int p = 20; while (p &gt; 2) { if (p % 2 == 0) p = p / 2; else p = p - 1; System.out.print(p + " "); }</code> 输出？`,R`<code>10 5 4 2</code>`],
+ [R`用 <code>j = w.indexOf("ss"); while (j != -1) { cnt++; j = w.indexOf("ss", j + 1); }</code> 在 "mississippi" 中数，cnt 是？`,R`2`],
+ [R`<code>String t = null; if (t != null &amp;&amp; t.length() &gt; 0)</code> 会报错吗？把 &amp;&amp; 两边交换呢？`,R`不会，短路跳过右边；交换后先调 <code>t.length()</code> → NullPointerException。`],
+ [R`<code>int i = 0; while (i &lt; 5); { i++; }</code> 会怎样？`,R`分号是循环体，i 永远是 0 → 无限循环。`],
+ [R`<code>int x = 3, y = 8; x = y; y = x;</code> 之后 x、y？（错题 1、2 变式）`,R`x = 8，y = 8（没有 temp，x 的原值丢了）`],
+ [R`<code>int v = 48; while (v % 4 == 0) { v /= 2; }</code> 结束时 v？`,R`6（48→24→12→6，6 % 4 = 2 停）`],
+ [R`<code>int k = 0; String o = ""; while (k &lt; 3) { k++; o += k; }</code> o 是？`,R`<code>"123"</code>（先加再拼，所以从 1 开始）`],
+ [R`g = 85：<code>r = "F"; if (g &gt;= 60) r = "D"; if (g &gt;= 70) r = "C"; if (g &gt;= 80) r = "B"; if (g &gt;= 90) r = "A";</code> r 是？换成从 90 往下写的独立 if 呢？`,R`"B"；从 90 往下写的独立 if，会被 <code>g &gt;= 60</code> 最后覆盖成 "D"`],
+ [R`类里有 <code>private int age;</code> 和 <code>public int getAge()</code>。类外写 <code>p.age</code>、<code>Person.getAge()</code>、<code>p.getAge()</code>，哪个能编译？`,R`只有 <code>p.getAge()</code>`]
+]
+};
+/* ===================== RENDER ===================== */
+const SUBJ={
+ chem:{scope:CHEM.scope,tabs:[{k:"mistakes",l:"错题陷阱",html:CHEM.mistakes},{k:"ref",l:"速查",html:CHEM.ref},{k:"quiz",l:"自测",quiz:CHEM.quiz,
+   sub:"先在纸上做，再点「看答案」，然后标记会 / 不会。前 10 题来自复习资料，后 4 题是按你的错题出的变式。"},{k:"plan",l:"计划",plan:CHEM.plan,foot:"11/3 考试日早上：只看「错题陷阱」页和考场检查清单，不做新题。9:00 开考，考场 412。"}]},
+ hist:{scope:HIST.scope,tabs:[{k:"saq",l:"SAQ 方法",html:HIST.saq},{k:"ref",l:"速查",html:HIST.ref},{k:"evidence",l:"证据库",html:HIST.evidence},{k:"compare",l:"对比",html:HIST.compare},
+   {k:"quiz",l:"年代自测",quiz:HIST.dates.map(([d,e])=>[`<b>${d}</b> 发生了什么？`,e]),sub:"看年份说出事件，再点「看答案」核对。Previous-knowledge MCQ 主要考这些。"},
+   {k:"plan",l:"SAQ 口头练习",plan:[{day:"用 TEA 大声说一遍，每题说完打勾",items:HIST.prompts.map(p=>[p,""])}],foot:"每题检查：在年代范围内？有专有名词？说了 because / which led to？重复了题目关键动词？例子去「证据库」找。"}]},
+ csa:{scope:CSA.scope,tabs:[{k:"mistakes",l:"错题陷阱",html:CSA.mistakes},{k:"ref",l:"速查",html:CSA.ref},{k:"quiz",l:"自测",quiz:CSA.quiz,sub:"先遮住答案，在纸上画变量表。答案已用 Java 实际运行核对过（来自复习资料）。"}]},
+ bc:{scope:BC.scope,tabs:[{k:"mistakes",l:"易错点",html:BC.mistakes},{k:"ref",l:"速查",html:BC.ref},{k:"mcq",l:"模拟考 · 选择",mcq:BC.mcq},{k:"frq",l:"模拟考 · FRQ",frq:BC.frq}]}
+};
+function progress(sid){
+ const S=SUBJ[sid];let done=0,tot=0;
+ S.tabs.forEach(t=>{
+  if(t.quiz){tot+=t.quiz.length;done+=Object.values(store.get(sid+":quiz",{})).filter(v=>v==="ok").length}
+  if(t.plan){tot+=t.plan.reduce((a,d)=>a+d.items.length,0);done+=Object.values(store.get(sid+":plan",{})).filter(Boolean).length}
+  if(t.mcq){tot+=t.mcq.length;const m=store.get(sid+":mcq",{});if(m.submitted)done+=t.mcq.filter((q,i)=>m.a?.[i]===q[2]).length}
+  if(t.frq){const n=t.frq.reduce((a,f)=>a+f.parts.length,0);tot+=n;done+=Object.values(store.get(sid+":frq",{})).filter(Boolean).length}
+ });return{done,tot};
+}
+let cur=null,onlyNo=false;
+const typeset=el=>{try{if(window.MathJax&&MathJax.typesetPromise)MathJax.typesetPromise([el]).catch(()=>{})}catch(e){}};
+
+function railHTML(){return EXAMS.map(e=>`<button class="subj${e.ready?"":" todo"}" data-id="${e.id}" aria-current="${cur===e.id}">${e.short}<small>${fmtDate(e).split(" ").slice(0,2).join(" ")}</small></button>`).join("")}
+
+function render(){
+ document.getElementById("rail").innerHTML=railHTML();
+ const e=EXAMS.find(x=>x.id===cur);
+ const head=`<div class="deskhead"><h2>${e.name}</h2><div class="meta">${fmtDate(e)} · 考场 ${e.room}${e.note?` · <span class="warn">${e.note}</span>`:""}</div></div>`;
+ const desk=document.getElementById("desk");
+ if(!e.ready||!SUBJ[cur]){desk.innerHTML=head+`<div class="empty" style="margin-top:18px"><b>内容准备中</b>${e.msg}<br>距离开考还有 ${left(new Date(e.start)-Date.now())}</div>`;return}
+ const S=SUBJ[cur];let tab=store.get("tab:"+cur,S.tabs[0].k);if(!S.tabs.some(t=>t.k===tab))tab=S.tabs[0].k;
+ const pr=progress(cur);
+ desk.innerHTML=head+`<p class="scope">${S.scope}</p>
+ <div class="progress" title="完成进度"><i style="width:${pr.tot?pr.done/pr.tot*100:0}%"></i></div>
+ <div class="tabs" role="tablist">${S.tabs.map(t=>`<button class="tab" role="tab" data-tab="${t.k}" aria-selected="${t.k===tab}">${t.l}${t.quiz?`<span class="n">${t.quiz.length}</span>`:""}${t.mcq?`<span class="n">${t.mcq.length}</span>`:""}</button>`).join("")}</div>
+ <section class="panel" id="panel"></section>`;
+ renderPanel(tab);
+}
+function curTab(){const S=SUBJ[cur];const k=store.get("tab:"+cur,S.tabs[0].k);return S.tabs.find(t=>t.k===k)||S.tabs[0]}
+function renderPanel(k){
+ const el=document.getElementById("panel");const t=SUBJ[cur].tabs.find(x=>x.k===k);
+ if(t.html!=null)el.innerHTML=t.html;
+ else if(t.quiz)renderQuiz(el,t);
+ else if(t.plan)renderPlan(el,t);
+ else if(t.mcq)renderMCQ(el,t);
+ else if(t.frq)renderFRQ(el,t);
+ typeset(el);
+}
+function updBar(){const b=document.querySelector(".progress i");if(b){const p=progress(cur);b.style.width=(p.tot?p.done/p.tot*100:0)+"%"}}
+
+/* self-test */
+function renderQuiz(el,t){
+ const st=store.get(cur+":quiz",{}),shown=store.get(cur+":shown",{});
+ const ok=Object.values(st).filter(v=>v==="ok").length,no=Object.values(st).filter(v=>v==="no").length;
+ el.innerHTML=`<div class="qhead"><div class="score">会 ${ok} · 不会 ${no} · 未标 ${t.quiz.length-ok-no}</div>
+ <div class="chips"><button class="btn" id="q-showall">全部显示答案</button><button class="btn" id="q-hideall">全部遮住</button><button class="btn" id="q-onlyno">${onlyNo?"显示全部":"只看不会的"}</button><button class="btn" id="q-reset">清除标记</button></div></div>
+ <p class="scope" style="margin:0">${t.sub||""}</p>
+ <div class="qlist">${t.quiz.map(([q,a],i)=>{const s=st[i]||"";if(onlyNo&&s!=="no")return"";return `<div class="q ${s}" data-i="${i}">
+ <div class="num">${i+1}</div><div>${q}</div>
+ ${shown[i]?`<div class="ans">${a}</div>`:""}
+ <div class="ctl"><button class="btn" data-act="show">${shown[i]?"遮住答案":"看答案"}</button>
+ <button class="btn okb" data-act="ok" aria-pressed="${s==="ok"}">会</button><button class="btn nob" data-act="no" aria-pressed="${s==="no"}">不会</button></div></div>`}).join("")}</div>`;
+}
+/* plan */
+function renderPlan(el,t){
+ const st=store.get(cur+":plan",{});
+ el.innerHTML=`<div class="grid2">${t.plan.map((d,di)=>`<div class="day"><h4>${d.day}${d.today?'<span class="today">今天</span>':""}</h4>
+ ${d.items.map(([x,m],ii)=>{const k=di+"-"+ii;return `<div class="check"><input type="checkbox" id="${cur}-plan-${k}" data-k="${k}" ${st[k]?"checked":""}><label for="${cur}-plan-${k}">${x}${m?`<span class="t">${m}</span>`:""}</label></div>`}).join("")}</div>`).join("")}</div>
+ ${t.foot?`<p class="note">${t.foot}</p>`:""}`;
+}
+/* mock MCQ */
+const LET="ABCDE";let timerInt=null;
+function mcqState(){return store.get(cur+":mcq",{a:{},submitted:false,used:0,run:null})}
+function mcqElapsed(m){return m.used+(m.run?Date.now()-m.run:0)}
+function fmtClock(ms){const s=Math.max(0,Math.round(ms/1000));return String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0")}
+function renderMCQ(el,t){
+ const m=mcqState();const n=t.mcq.length;
+ const answered=Object.keys(m.a).length;
+ const correct=t.mcq.filter((q,i)=>m.a[i]===q[2]).length;
+ const wrong=t.mcq.map((q,i)=>m.a[i]!==q[2]?i+1:null).filter(Boolean);
+ el.innerHTML=`<div class="mockbar">
+  <div><div class="clock" id="clock">${fmtClock(55*6e4-mcqElapsed(m))}</div><div class="scope" style="margin:0">建议 55 分钟 · 不用计算器</div></div>
+  ${m.submitted?`<div class="result"><b>${correct} / ${n}</b>${wrong.length?`错题：${wrong.join("、")}`:"全对"}<br><span class="scope">目标：错 ≤ 4 题</span></div>`:`<div class="scope" style="margin:0">已作答 ${answered} / ${n}</div>`}
+  <div class="chips">${m.submitted?"":`<button class="btn" id="m-timer">${m.run?"暂停计时":(m.used?"继续计时":"开始计时")}</button><button class="btn" id="m-submit">交卷</button>`}<button class="btn" id="m-reset">重做</button></div>
+ </div>
+ <div class="qlist">${t.mcq.map(([stem,opts,ans,sol],i)=>{
+  const pick=m.a[i];const cls=m.submitted?(pick===ans?"ok":"no"):"";
+  return `<div class="q mq ${cls}" data-i="${i}"><div class="num">${i+1}</div><div class="stem">${stem}</div>
+  <div class="opts">${opts.map((o,j)=>{let c="opt";if(pick===j)c+=" sel";if(m.submitted&&j===ans)c+=" right";if(m.submitted&&pick===j&&j!==ans)c+=" wrong";
+   return `<button class="${c}" data-j="${j}" ${m.submitted?"disabled":""}><span class="let">${LET[j]}</span><span>${o}</span></button>`}).join("")}</div>
+  ${m.submitted?`<div class="ans"><b>答案 ${LET[ans]}</b>${pick==null?"（未作答）":""}　${sol}</div>`:""}</div>`}).join("")}</div>`;
+ clearInterval(timerInt);
+ if(m.run&&!m.submitted)timerInt=setInterval(()=>{const c=document.getElementById("clock");if(!c){clearInterval(timerInt);return}const left=55*6e4-mcqElapsed(mcqState());c.textContent=left>0?fmtClock(left):"时间到";c.classList.toggle("over",left<=0)},1000);
+}
+/* mock FRQ */
+function renderFRQ(el,t){
+ const st=store.get(cur+":frq",{});
+ el.innerHTML=`<p class="scope" style="margin:0">建议 50 分钟。每小问先在纸上写完整过程（公式 → 代数 → 结果），再点开解答对照。</p>
+ ${t.frq.map((f,fi)=>`<div class="frq"><h3>${f.title}</h3>${f.stem}
+ <div class="qlist">${f.parts.map(([q,a],pi)=>{const k=fi+"-"+pi;return `<div class="q" data-k="${k}"><div class="num">(${"abcdef"[pi]})</div><div>${q}</div>
+ ${st[k]?`<div class="ans">${a}</div>`:""}<div class="ctl"><button class="btn" data-frq="${k}">${st[k]?"收起解答":"看解答"}</button></div></div>`}).join("")}</div></div>`).join("")}
+ <p class="note">评分参考：选择 28 题 × 1 分；FRQ 每题约 9 分（每小问 1–2 分）。</p>`;
+}
+
+document.addEventListener("click",ev=>{
+ const s=ev.target.closest(".subj");if(s){cur=s.dataset.id;store.set("cur",cur);location.hash=cur;render();window.scrollTo(0,0);return}
+ const t=ev.target.closest(".tab");if(t){store.set("tab:"+cur,t.dataset.tab);document.querySelectorAll(".tab").forEach(b=>b.setAttribute("aria-selected",b===t));renderPanel(t.dataset.tab);return}
+ const el=document.getElementById("panel");if(!el)return;const T=curTab();
+ /* MCQ option: toggle classes only, no re-render */
+ const o=ev.target.closest(".opt");
+ if(o&&!o.disabled){const q=o.closest(".mq"),i=q.dataset.i,j=+o.dataset.j;const m=mcqState();m.a[i]=j;store.set(cur+":mcq",m);
+  q.querySelectorAll(".opt").forEach(b=>b.classList.toggle("sel",+b.dataset.j===j));
+  const sc=el.querySelector(".mockbar .scope:not(.clock)");return}
+ const fb=ev.target.closest("[data-frq]");
+ if(fb){const st=store.get(cur+":frq",{});st[fb.dataset.frq]=!st[fb.dataset.frq];store.set(cur+":frq",st);const y=window.scrollY;renderFRQ(el,T);typeset(el);window.scrollTo(0,y);updBar();return}
+ const qb=ev.target.closest(".q:not(.mq) button[data-act]");
+ if(qb){const i=qb.closest(".q").dataset.i,act=qb.dataset.act;
+  if(act==="show"){const sh=store.get(cur+":shown",{});sh[i]=!sh[i];store.set(cur+":shown",sh)}
+  else{const st=store.get(cur+":quiz",{});st[i]=st[i]===act?"":act;store.set(cur+":quiz",st);updBar()}
+  renderQuiz(el,T);typeset(el);return}
+ const id=ev.target.id;
+ if(id==="q-showall"||id==="q-hideall"){const sh={};if(id==="q-showall")T.quiz.forEach((_,i)=>sh[i]=true);store.set(cur+":shown",sh);renderQuiz(el,T);typeset(el)}
+ if(id==="q-onlyno"){onlyNo=!onlyNo;renderQuiz(el,T);typeset(el)}
+ if(id==="q-reset"){store.set(cur+":quiz",{});store.set(cur+":shown",{});onlyNo=false;renderQuiz(el,T);updBar()}
+ if(id==="m-timer"){const m=mcqState();if(m.run){m.used+=Date.now()-m.run;m.run=null}else m.run=Date.now();store.set(cur+":mcq",m);renderMCQ(el,T);typeset(el)}
+ if(id==="m-submit"){const m=mcqState();if(m.run){m.used+=Date.now()-m.run;m.run=null}m.submitted=true;store.set(cur+":mcq",m);renderMCQ(el,T);typeset(el);updBar();window.scrollTo(0,el.offsetTop-80)}
+ if(id==="m-reset"){if(ev.target.dataset.confirm!=="1"){ev.target.dataset.confirm="1";ev.target.textContent="确定清空？再点一次";return}
+  store.set(cur+":mcq",{a:{},submitted:false,used:0,run:null});renderMCQ(el,T);typeset(el);updBar()}
+});
+document.addEventListener("change",ev=>{const k=ev.target.dataset?.k;if(k==null)return;const st=store.get(cur+":plan",{});st[k]=ev.target.checked;store.set(cur+":plan",st);updBar()});
+
+function tick(){
+ const now=Date.now();const n=EXAMS.find(e=>new Date(e.start).getTime()+90*6e4>now);
+ document.getElementById("next").innerHTML=n?`下一场 · ${n.short} · ${fmtDate(n).split(" ").slice(0,3).join(" ")}<b>${left(new Date(n.start)-now)}</b>`:"<b>期中结束</b>";
+}
+function fromHash(){const h=location.hash.slice(1);if(EXAMS.some(e=>e.id===h)){cur=h;return true}return false}
+if(!fromHash())cur=store.get("cur","chem");
+if(!EXAMS.some(e=>e.id===cur))cur="chem";
+render();tick();setInterval(tick,30000);
+window.addEventListener("hashchange",()=>{if(fromHash())render()});
+</script>
+<script>window.MathJax={tex:{inlineMath:[["\\(","\\)"]],displayMath:[["\\[","\\]"]]},svg:{fontCache:"global"},options:{enableMenu:false}};</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-svg.js" async></script>
+
+</body></html>
