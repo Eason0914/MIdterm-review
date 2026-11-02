@@ -136,6 +136,8 @@ section.panel>*,.qlist>*{min-width:0}
 code{overflow-wrap:anywhere}
 pre.code{font-family:var(--mono);font-size:13px;line-height:1.5;background:var(--sunk);border-left:3px solid var(--accent);padding:10px 14px;margin:8px 0;overflow-x:auto;border-radius:2px}
 .q code{white-space:normal;word-break:break-word}
+.planner textarea{width:100%;min-width:140px;font:14px/1.5 var(--body);color:var(--ink);background:var(--sticky-y);border:1px dashed var(--line);border-radius:2px;padding:6px 8px;resize:vertical}
+.planner textarea:focus{outline:2px dashed var(--accent);outline-offset:1px}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 
@@ -149,8 +151,8 @@ pre.code{font-family:var(--mono);font-size:13px;line-height:1.5;background:var(-
 <script>
 const EXAMS=[
  {id:"chem",name:"AP Chemistry",short:"化学",start:"2026-11-03T09:00:00+08:00",end:"10:30",room:"412",note:"",ready:true},
- {id:"eng",name:"Pre-AP English 2",short:"English",start:"2026-11-03T13:30:00+08:00",end:"14:30",room:"414",note:"13:30 开始",ready:false,msg:"还没有复习资料。上传后加入。"},
- {id:"phys",name:"AP Physics C: Mechanics",short:"物理 C",start:"2026-11-04T09:00:00+08:00",end:"10:30",room:"412",note:"考场 412（平时在 413）",ready:false,msg:"资料已在项目里，下一步加入。"},
+ {id:"eng",name:"Pre-AP English 2",short:"English",start:"2026-11-03T13:30:00+08:00",end:"14:30",room:"414",note:"13:30 开始",ready:true,msg:"还没有复习资料。上传后加入。"},
+ {id:"phys",name:"AP Physics C: Mechanics",short:"物理 C",start:"2026-11-04T09:00:00+08:00",end:"10:30",room:"412",note:"考场 412（平时在 413）",ready:true,msg:"资料已在项目里，下一步加入。"},
  {id:"hist",name:"AP World History",short:"历史",start:"2026-11-05T09:00:00+08:00",end:"10:30",room:"414",note:"",ready:true,msg:"资料已收到，下一步加入。"},
  {id:"bc",name:"AP Calculus BC",short:"BC",start:"2026-11-06T09:00:00+08:00",end:"10:30",room:"417",note:"考场 417（平时在 412）",ready:true,msg:"复习资料和模拟卷已在项目里，之后加入，含可作答的模拟考。"},
  {id:"csa",name:"AP Computer Science A",short:"CSA",start:"2026-11-06T12:30:00+08:00",end:"14:00",room:"414",note:"12:30 开始",ready:true,msg:"资料已在项目里，下一步加入。"}
@@ -1039,6 +1041,234 @@ quiz:[
  [R`类里有 <code>private int age;</code> 和 <code>public int getAge()</code>。类外写 <code>p.age</code>、<code>Person.getAge()</code>、<code>p.getAge()</code>，哪个能编译？`,R`只有 <code>p.getAge()</code>`]
 ]
 };
+/* ===================== ENGLISH CONTENT ===================== */
+const ENG={
+scope:"期中考 = 用 Holden 的口吻写一篇 narrative，只能用 <i>The Catcher in the Rye</i> 第 1–12 章的内容。必须：第一人称到底、有对话、开头中间结尾清楚、有 message（展示出来，不能直接说）、Holden 的 voice（tone、diction、syntax、subjects）。",
+voice:`
+<div>
+<h3>Holden's voice toolkit</h3>
+<p class="scope" style="margin:0 0 10px">每篇故事每一行挑 2–3 个用。</p>
+<div class="tbl"><table>
+<tr><th>Element</th><th>What to use</th></tr>
+<tr><td><b>Tone</b></td><td>Cynical, critical, ironic, candid, nostalgic, reflective, compassionate, naive, philosophical</td></tr>
+<tr><td><b>Subjects</b></td><td>People's looks and habits, phony adults or authority, school life, movies, wonder at nature, his own weaknesses, real books and real people, Allie, Phoebe, Jane</td></tr>
+<tr><td><b>Diction</b></td><td><div class="chips"><span class="chip">phony</span><span class="chip">lousy</span><span class="chip">corny</span><span class="chip">terrific</span><span class="chip">moron</span><span class="chip">dough</span><span class="chip">goddam</span><span class="chip">as hell</span><span class="chip">and all</span><span class="chip">anyway</span><span class="chip">, though</span><span class="chip">No kidding</span><span class="chip">Boy,</span><span class="chip">It killed me</span><span class="chip">horsing around</span><span class="chip">one thing about</span></div></td></tr>
+<tr><td><b>Syntax &amp; habits</b></td><td>Swearing it's true ("I really did."), exaggeration, irony, lying, big claims ("People always…"), digressions, a tone change inside one paragraph, short sentences mixed with long ones, similes</td></tr>
+</table></div>
+</div>
+<div class="alert"><b>Profanity</b>　Holden says <b>goddam</b>, never the f-word. Words like "fxxking" sound like a modern teenager, not like him.</div>
+<div>
+<h3>Message ideas（第 1–12 章里适合 Holden 的）</h3>
+<ul>
+<li>Phoniness versus being real</li>
+<li>Small honest moments matter</li>
+<li>Grief for Allie</li>
+<li>Wanting things to stay the same (the ducks)</li>
+<li>People are more than your first judgment of them</li>
+</ul>
+</div>`,
+draft:`
+<div>
+<h3>你的草稿（paragliding story）要改的 5 处</h3>
+<p class="scope" style="margin:0 0 10px">想法没问题，丢分在控制，不在构思。</p>
+<div class="qlist">
+<div class="q no"><div class="num">1</div><div><b>结尾变成了第三人称。</b>"When Holden finally flies…" 违反第一人称规则。</div></div>
+<div class="q no"><div class="num">2</div><div><b>脏话用错了。</b>换成工具箱里的 diction（goddam、lousy、phony…）。</div></div>
+<div class="q no"><div class="num">3</div><div><b>cynicism 从头到尾没变。</b>每个人都是假的，Holden 只会冷笑。需要<mark>一个语气软下来的时刻</mark>。</div></div>
+<div class="q no"><div class="num">4</div><div><b>中间太单薄。</b>加对话、一个谎话或夸张、一段 digression。</div></div>
+<div class="q no"><div class="num">5</div><div><b>没有 message。</b>Holden 要注意到或做了某件事，读者从中领会到道理。</div></div>
+</div>
+</div>
+<div>
+<h3>怎么改：让 Coach Allen 其实不 phony</h3>
+<p>Holden 以为他是个假人，结果教练很正派，Holden 只好承认自己判断错了。可能的结尾：</p>
+<div class="note" style="font-size:16px;line-height:1.85">Up there you couldn't hear anything except the wind. Allie would've gone crazy for it. He'd have asked Allen about forty questions, and Allen would've answered every one, I bet. That's the thing. I'd decided he was a phony before he'd even opened his mouth. I do that. When we landed he didn't say anything corny like "Wasn't that amazing, kid?" He just sort of nodded at me, like we both knew. I nodded back. I really did.</div>
+<p style="margin-top:14px">Message：<b>you can't sneer at everything, or you miss the good parts.</b> 故事里一句都没直接说。</p>
+</div>
+<div>
+<h3>范文（charity book sale）为什么好</h3>
+<p class="scope" style="margin:0 0 10px">Message 是「小而真实的善意胜过响亮的假慈善」，从头到尾没说出来。每个技巧都可以照搬：</p>
+<div class="tbl"><table>
+<tr><th>Technique</th><th>Where it shows in the sample</th></tr>
+<tr><td>A sharp detail about a person</td><td>The horse tie he keeps "petting"</td></tr>
+<tr><td>Irony</td><td>The man bragging about his donation won't help an actual child</td></tr>
+<tr><td>Lying, then admitting it</td><td>"He hadn't." / "Another lie."</td></tr>
+<tr><td>A digression that shows his feeling</td><td>Allie and the bird that weighs less than a penny</td></tr>
+<tr><td>Tone shift</td><td>Cynical about Horse Tie, then gentle with the girl</td></tr>
+<tr><td>Swearing it's true</td><td>"I liked that. I really did."</td></tr>
+<tr><td>An ironic last line</td><td>"I missed how much it was this time."</td></tr>
+</table></div>
+</div>`,
+structure:`
+<div>
+<h3>三段结构（任何题目都能套）</h3>
+<div class="tbl"><table>
+<tr><th>Part</th><th>What goes in it</th></tr>
+<tr><td class="why">Beginning</td><td>A complaint, one physical detail about someone, one big claim ("People always…")</td></tr>
+<tr><td class="why">Middle</td><td>A clash with a phony person (<b>with dialogue</b>), Holden lies or exaggerates, then a digression to Allie, Phoebe or the ducks that shows his real feeling</td></tr>
+<tr><td class="why">End</td><td>Something surprises him or softens him. Show the message in a small image or action, then close on an understated or ironic line</td></tr>
+</table></div>
+</div>
+<div>
+<h3>考场 3 步</h3>
+<ol>
+<li><b>5 分钟计划</b>：message、phony person、digression、last line。</li>
+<li>写开头、中间、结尾，<b>对话放在中间</b>。</li>
+<li><b>最后 5 分钟</b>过清单，尤其是第一人称检查。</li>
+</ol>
+</div>
+<div>
+<h3>提前准备 2–3 个故事</h3>
+<p class="scope" style="margin:0 0 10px">进考场前想好，考试时套到题目上。空格可以直接填，会保存在这台设备上。</p>
+<div class="tbl"><table class="planner">
+<tr><th>Story idea</th><th>Phony person</th><th>Digression</th><th>Final image</th></tr>
+<tr><td>Trying something new (paragliding)</td><td>Coach Allen, who turns out real</td><td>Allie would have loved it</td><td>Holden and Allen nod at each other</td></tr>
+<tr><td>Meeting a stranger</td><td><textarea id="eng-p-1a" data-save="eng-p-1a" rows="2" placeholder="谁？"></textarea></td><td><textarea id="eng-p-1b" data-save="eng-p-1b" rows="2" placeholder="Allie / Phoebe / ducks…"></textarea></td><td><textarea id="eng-p-1c" data-save="eng-p-1c" rows="2" placeholder="最后的画面"></textarea></td></tr>
+<tr><td>A family moment (Phoebe)</td><td><textarea id="eng-p-2a" data-save="eng-p-2a" rows="2" placeholder="谁？"></textarea></td><td><textarea id="eng-p-2b" data-save="eng-p-2b" rows="2" placeholder="Allie / Phoebe / ducks…"></textarea></td><td><textarea id="eng-p-2c" data-save="eng-p-2c" rows="2" placeholder="最后的画面"></textarea></td></tr>
+</table></div>
+</div>`,
+check:["First person throughout（结尾尤其要查）","Dialogue","At least 2 tone shifts","5+ words from the diction list","Short and long sentences mixed","At least one simile","A message that is shown, not stated","没有 f-word，只用 goddam","只用了第 1–12 章的内容"]
+};
+/* ===================== PHYSICS CONTENT ===================== */
+const PHYS={
+scope:"范围（按作业推断）：Unit 1 运动学 + Unit 2 力与牛顿定律（到摩擦力为止）。作业几乎全 A，重点放在 C 比 Physics 1 多出来的部分：微积分处理变加速度、符号化推导、多物体系统。阻力 \\(F=-bv\\) 是否考不确定，建议问老师。",
+mistakes:R`
+<div>
+<h3>你作业里的易错点</h3>
+<p class="scope" style="margin:0 0 10px">分数都是 A，但重新核对后有 3 处实际问题，考试会扣分。</p>
+<div class="qlist">
+<div class="q no"><div class="num">w8 Q5</div><div><b>鸟食器三绳：方程列对了，结果对调了。</b>你写 \(T_1=75\) N、\(T_2=130\) N。<br>
+\(T_1\cos60^\circ=T_2\cos30^\circ\Rightarrow T_1=\sqrt3\,T_2\)，代入得 \(2T_2=150\)，\(T_2=75\) N，\(T_1=130\) N。<br><mark>快速检验：更陡的绳拉力更大。</mark></div></div>
+<div class="q no"><div class="num">w8 Q7</div><div><b>腿与石膏：漏答 α。</b>只算了 \(W_2=171.5\) N。\(\tan\alpha=149.3/84.3\Rightarrow\alpha\approx60.5^\circ\)。<br>题目问几个量就答几个，答完回看题干。</div></div>
+<div class="q no"><div class="num">MCQ Q19</div><div><b>相对速度（Kinematics 25/26 丢的那题）。</b>地面观察者看到包裹以 \(v_1\) 斜落，飞行员看到它以 \(v_2\) 竖直落。飞行员速度 = 包裹的水平分量，\(v_2\) 是竖直分量，所以 \(u=\sqrt{v_1^2-v_2^2}\)。<br>写 \(\vec v_{\text{物/地}}=\vec v_{\text{物/飞}}+\vec v_{\text{飞/地}}\)，再画矢量三角形。</div></div>
+</div>
+<p style="margin-top:12px"><b>小问题：</b>w8 Q2 写了 3133.7 N，应按有效数字写 \(3.1\times10^3\) N；w9 Q1 混用 g = 10 和 9.8，考试统一用一个并写明。第一次月考 45/50 丢的 5 分值得自己整理一遍。</p>
+</div>
+<div>
+<h3>摩擦力的两个坑</h3>
+<div class="grid2">
+<div class="alert"><b>静摩擦是「最多」\(\mu_sN\)。</b>\(f_s\le\mu_sN\)，只有「即将滑动」时取等号。没滑动时 \(f_s\) 由平衡条件定。</div>
+<div class="alert"><b>斜向力会改变 N。</b>一旦有斜拉 / 斜推，N 不再是 mg，先算 N 再算 f：\(N=mg\mp F\sin\theta\)（拉减推加）。</div>
+</div>
+</div>
+<div>
+<h3>FBD 评分细节（FRQ 会扣分）</h3>
+<ul>
+<li>只画作用在该物体上的力，箭头从点出发，<b>不画 ma、不画分量</b>。</li>
+<li>每个力都能说出「谁施加的」。对系统画 FBD 时，内力（如 A、B 间的绳拉力）不出现。</li>
+<li>标签要具体：\(F_{AB}\) 表示 A 对 B 的力（F&amp;FBD Quiz Q9）。</li>
+<li>牛三对：作用在两个不同物体上、同种性质。书受的重力 ↔ 书吸引地球；书受的支持力 ↔ 书压桌子。<mark>N 与 mg 不是一对。</mark></li>
+<li>去线后的滑块、抛体最高点：只有重力，没有「向前的力」。</li>
+</ul>
+</div>
+<div>
+<h3>复习卷里的坑</h3>
+<div class="grid2">
+<div class="note"><b>叠放物块（Q21）</b>：\(f_1\) 同时以反作用力作用在 \(m_2\) 上；\(f_2\) 对应的正压力是 \((m_1+m_2)g\)，不是 \(m_2g\)。</div>
+<div class="note"><b>答案勘误</b>：Multi-mass Q1(b) 交换位置后，绳拉的是 30 kg 的箱子，\(T=30\times1.5=45\) N，不是答案写的 30 N。「T 变大」的结论是对的。</div>
+<div class="note"><b>实验题</b>：问「质量测错能否解释误差」时，先看 m 在式子里是否约掉；约掉了就不能解释（Q23d）。斜率用最佳拟合线上的点算，不用数据点。</div>
+<div class="note"><b>符号题习惯</b>：答完检查一个极限情况（\(m_1=m_2\)、\(\theta=0\)、\(\mu=0\)）和量纲。</div>
+</div>
+</div>`,
+ref:R`
+<details open><summary>Unit 1 · 微积分运动学</summary><div class="body">
+<p class="note">一条链：往下求导，往上积分并带初值。给出 \(a(v)\) 或 \(a(x)\) 时改用分离变量或链式法则。</p>
+<div class="eq">\(v=\dfrac{dx}{dt},\quad a=\dfrac{dv}{dt}=\dfrac{d^2x}{dt^2},\qquad v(t)=v_0+\displaystyle\int_0^t a\,dt',\quad x(t)=x_0+\int_0^t v\,dt'\)</div>
+<div class="eq">\(a(v)\) 已知：\(\displaystyle\int\frac{dv}{a(v)}=\int dt\)　　\(a(x)\) 已知：\(a=v\dfrac{dv}{dx}\Rightarrow\displaystyle\int v\,dv=\int a(x)\,dx\)</div>
+<h4>四个必会套路</h4>
+<ol>
+<li><b>极值位置 → 令 v = 0。</b>Progress Check FRQ 1：\(v=bt^2-ct\)，静止于 \(t_R=c/b\)，最远负位置 \(x_R=-\frac{c^3}{6b^2}\)。回到 x = 0：\(\frac{bt^3}3=\frac{ct^2}2\Rightarrow t=\frac{3c}{2b}\)，\(v=\frac{3c^2}{4b}\)。</li>
+<li><b>最大速度 → 令 a = 0，再查端点。</b>FRQ 2：\(a=P-Qt\)，\(v=Pt-\frac{Qt^2}2\)，\(t=P/Q\) 时 \(v_{\max}=\frac{P^2}{2Q}\)。终点 \(\frac{3P}{2Q}\) 处 \(v=\frac{3P^2}{8Q}\) 更小。<mark>考试写上「检查端点」这一步。</mark></li>
+<li><b>路程 ≠ 位移 → 在 v = 0 处切开分段取绝对值。</b>\(a=6t-6\Rightarrow v=3t^2-6t\Rightarrow x=t^3-3t^2\)。0–3 s 位移 = 0，路程 = |−4| + |4| = 8 m。</li>
+<li><b>加速还是减速 → 看 \(a\cdot v\) 的符号</b>，不是 a 的符号。同号加速，异号减速。</li>
+</ol>
+<h4>二维与沿曲线运动</h4>
+<ul>
+<li>矢量逐分量：\(\vec v=6t\,\hat i+4\,\hat j\Rightarrow\vec a=6\,\hat i\)，\(\vec r=3t^2\hat i+4t\,\hat j\)。t = 2 s：\(|v|=\sqrt{160}\approx12.6\) m/s，与 +x 成 18.4°。a 与 v 夹角 &lt; 90°，速率增大。</li>
+<li>沿 \(y=f(x)\) 运动：\(v_y=f'(x)\,v_x\)；若 \(v_x=C\) 恒定，\(a_y=f''(x)\,C^2\)，a 沿纯 y 方向。</li>
+<li>速率恒定 ⇔ a 始终垂直于 v（a 指向曲线凹侧）。</li>
+<li>\(v=v_0e^{-\beta t}\Rightarrow a=-\beta v\)，这就是阻力模型的雏形。</li>
+</ul>
+<h4>图像</h4>
+<p>x–t 斜率 = v；v–t 斜率 = a；v–t 面积 = Δx；a–t 面积 = Δv。换到匀速自行车参考系：v–t 图整体下移 \(v_{\text{bike}}\)，形状和斜率不变。</p>
+</div></details>
+
+<details open><summary>抛体运动（符号化结论）</summary><div class="body">
+<div class="eq">\(T=\dfrac{2v_0\sin\theta}{g},\quad H=\dfrac{v_0^2\sin^2\theta}{2g},\quad R=\dfrac{v_0^2\sin2\theta}{g},\quad y=x\tan\theta-\dfrac{g\,x^2}{2v_0^2\cos^2\theta}\)</div>
+<ul>
+<li>R 只对同高度落地成立。θ 与 90° − θ 射程相同；45° 最远。</li>
+<li>从高 h 处斜抛：解 \(-h=v_0\sin\theta\,t-\frac12gt^2\)，取正根。此时最远角度 &lt; 45°。</li>
+<li>最高点：\(v=v_0\cos\theta\)（不是 0），a = g 向下。同一高度上升与下落速率相等。</li>
+<li>水平抛出：\(t=\sqrt{2h/g}\)，与 \(v_0\) 无关。</li>
+<li>竖直上抛：上升时间 \(v_0/g\)，全程 a = −g（包括最高点）。</li>
+</ul>
+<h4>实验题：线性化（Progress Check FRQ 3）</h4>
+<p>水平发射器变高度 h，测水平距离 x。\(x=v_0\sqrt{2h/g}\)，作 \(x^2\)–h 图，斜率 \(=\frac{2v_0^2}{g}\)，所以 \(v_0=\sqrt{g\cdot\text{slope}/2}\)。降低不确定度：每个高度重复多次取平均，取更大范围的 h。</p>
+</div></details>
+
+<details open><summary>Unit 2 · 牛顿定律标准模型</summary><div class="body">
+<p class="note">顺序固定：选对象 → 画 FBD → 沿加速度方向建坐标 → 各方向写 \(\Sigma F=ma\) → 联立。多物体先对整体求 a，再隔离一个物体求内力。</p>
+<div class="tbl"><table>
+<tr><th>模型</th><th>结果</th><th>来自 / 检验</th></tr>
+<tr><td>Atwood（\(m_2&gt;m_1\)）</td><td>\(a=\frac{(m_2-m_1)g}{m_1+m_2}\)，\(T=\frac{2m_1m_2g}{m_1+m_2}\)</td><td>\(m_1g&lt;T&lt;m_2g\)（Quiz Q5）</td></tr>
+<tr><td>桌面 \(m_1\) + 悬挂 \(m_2\)</td><td>\(a=\frac{(m_2-\mu_km_1)g}{m_1+m_2}\)</td><td>μ = 0 时退化为 \(\frac{m_2g}{m_1+m_2}\)</td></tr>
+<tr><td>斜面下滑</td><td>\(a=g(\sin\theta-\mu_k\cos\theta)\)</td><td>上滑时改为 + 号</td></tr>
+<tr><td>斜面上自行滑动条件</td><td>\(\tan\theta&gt;\mu_s\)</td><td>w9 Q5：tan1.7° = 0.030 &gt; 0.025，会滑</td></tr>
+<tr><td>电梯中称重</td><td>\(N=m(g+a)\)，向上为正</td><td>w8 Q8：N = 0.75mg → a = g/4 向下</td></tr>
+<tr><td>斜拉 / 斜推 F</td><td>\(N=mg\mp F\sin\theta\)（拉减推加）</td><td>w9 Q3：\(\mu=\frac{F\cos\theta}{mg+F\sin\theta}\)</td></tr>
+<tr><td>加速车内悬挂物</td><td>\(\tan\theta=a/g\)</td><td>w8 Q10</td></tr>
+<tr><td>不滑动的最大加 / 减速度</td><td>\(a_{\max}=\mu_sg\)</td><td>w9 Q2、Q4</td></tr>
+<tr><td>两个物体串联提升</td><td>\(T_{\text{上}}=(m_1+m_2)(g+a)\)，\(T_{\text{下}}=m_2(g+a)\)</td><td>w8 Q9</td></tr>
+</table></div>
+</div></details>
+
+<details open><summary>复习卷补充（Midterm Review + Multi-mass）</summary><div class="body">
+<h4>弹簧</h4>
+<ul><li>\(F=-kx\)。弹簧剪成两半后每半 \(k\to2k\)（Q4）。串联 \(\frac1k=\frac1{k_1}+\frac1{k_2}\)，并联 \(k=k_1+k_2\)。</li>
+<li>物体静止后，弹簧力 = 其余水平力（摩擦 + 绳拉力）的矢量和，不是其中某一个力（Q3）。</li></ul>
+<h4>F–t 图与力撤去之后</h4>
+<ul><li>从图上读 F 再用 a = F/m；F–t 图面积 = mΔv（Q1）。</li>
+<li>力撤去且无摩擦 → 匀速运动。力再小也能推动物体（Q5）。</li></ul>
+<h4>特殊受力情形</h4>
+<ul>
+<li>坐在秋千上自己拉绳：两段绳都向上拉系统，2T = W（Q6）。</li>
+<li>斜拉物体且不离地的最大加速度：临界时 N = 0，所以 f = 0，\(a_{\max}=g\cot\theta\)（Q20e）。</li>
+<li>梯子靠光滑墙：竖直方向只有地面支持力和重力，N = W（Q13）。</li>
+<li>板子慢慢抬起，物块开始滑动的角度 \(\theta=\arctan\mu_s\)，与质量和接触面积无关（Q16）。</li>
+<li>光滑斜面先上滑再下滑：全程 \(a=g\sin\theta\)，沿斜面向下（Q12）。</li>
+<li>悬挂物落地瞬间：T 变为 0，斜面上物块速度仍沿斜面向上，加速度变为沿斜面向下（Q24c）。</li>
+</ul>
+<h4>叠放物块 + 两个摩擦面（Q21，最可能出 FRQ）</h4>
+<p>\(m_1\) 叠在 \(m_2\) 上，\(m_2\) 通过绳连着悬挂的 M。</p>
+<div class="tbl"><table>
+<tr><th>情形</th><th>结果</th></tr>
+<tr><td>全部静止</td><td>\(f_1=0\)（\(m_1\) 没有水平力），\(N_2=(m_1+m_2)g\)，\(T=f_2=Mg\)</td></tr>
+<tr><td>仍能静止的最大 M</td><td>\(M=\mu_{s2}(m_1+m_2)\)</td></tr>
+<tr><td>两块一起运动</td><td>\(a=\frac{[M-\mu_{k2}(m_1+m_2)]g}{M+m_1+m_2}\)</td></tr>
+<tr><td>\(m_1\) 在 \(m_2\) 上打滑</td><td>\(a_1=\mu_{k1}g\)；\(a_2=\frac{[M-\mu_{k1}m_1-\mu_{k2}(m_1+m_2)]g}{M+m_2}\)</td></tr>
+</table></div>
+<h4>斜面 + 悬挂物的角度范围（Multi-mass Q6）</h4>
+<ul><li>两个方向各一个临界：\(\sin\theta\pm\mu_s\cos\theta=m/M\)。M 将要上滑取 +，得 \(\theta_{\min}\)；将要下滑取 −，得 \(\theta_{\max}\)。</li>
+<li>快速解法：\(\sin\theta\pm\mu\cos\theta=\sqrt{1+\mu^2}\,\sin(\theta\pm\varphi)\)，\(\varphi=\arctan\mu\)。M = 4、m = 2、μ = 0.3 → \(\theta_{\min}=11.9^\circ\)，\(\theta_{\max}=45.3^\circ\)。</li></ul>
+<h4>实验题：线性化后读斜率和截距</h4>
+<ul><li>a–F 图（有摩擦）：\(a=\frac Fm-\frac fm\)，斜率 = 1/m，横截距 = f。摩擦增大时斜率不变，横截距变大（Q22）。</li>
+<li>a–sinθ 图（风扇小车下坡）：\(a=g\sin\theta+F_{\text{fan}}/m\)，斜率 = g，纵截距 = \(F_{\text{fan}}/m\)。质量加倍时直线平行下移（Q23）。</li></ul>
+</div></details>`,
+quiz:[
+ [R`物体初速 \(v_0\)，加速度 \(a=-kv^2\)（k &gt; 0）。求 \(v(t)\) 和 \(x(t)\)。`,R`\(\frac{dv}{v^2}=-k\,dt\Rightarrow v=\frac{v_0}{1+kv_0t}\)；\(x=\frac1k\ln(1+kv_0t)\)。`],
+ [R`物体在 x = 0 处速度 \(v_0\)，加速度 \(a=cx\)。求 \(v(x)\)。`,R`\(v\,dv=cx\,dx\Rightarrow v=\sqrt{v_0^2+cx^2}\)。`],
+ [R`质量 m 的物体从静止下落，受阻力 \(F=-bv\)。求终端速度和 \(v(t)\)。（先问老师是否在范围内）`,R`\(v_T=\frac{mg}b\)；\(m\frac{dv}{dt}=mg-bv\Rightarrow v=\frac{mg}b\left(1-e^{-bt/m}\right)\)。时间常数 \(\tau=m/b\)。`],
+ [R`光滑水平面上质量 m 的物块从静止受 \(F=Ct\) 作用。求 \(v(t)\)、\(x(t)\)。`,R`\(v=\frac{Ct^2}{2m}\)，\(x=\frac{Ct^3}{6m}\)。`],
+ [R`光滑斜面（倾角 θ）上的 \(m_1\) 通过顶端滑轮连着悬挂的 \(m_2\)。求 a 和 T；什么条件下 \(m_1\) 沿斜面向上？`,R`\(a=\frac{(m_2-m_1\sin\theta)g}{m_1+m_2}\)，\(T=\frac{m_1m_2g(1+\sin\theta)}{m_1+m_2}\)；\(m_2&gt;m_1\sin\theta\) 时 \(m_1\) 向上。`],
+ [R`用水平力 F 把质量 m 的物块压在竖直墙上，静摩擦系数 \(\mu_s\)。求使物块不下滑的最小 F。`,R`\(\mu_sF\ge mg\Rightarrow F_{\min}=\frac{mg}{\mu_s}\)。`],
+ [R`m 叠放在 M 上，两者间 \(\mu_s\)，地面光滑。水平力 F 作用在 M 上。求两者不相对滑动的最大 F。`,R`上块只靠静摩擦加速，\(a_{\max}=\mu_sg\)，所以 \(F_{\max}=\mu_s(m+M)g\)。`]
+],
+plan:[
+ {day:"11/1 周日 · 运动学",items:[["不看答案重做 Progress Check FRQ 1 和 FRQ 2，全符号作答",""],["重做 Kinematics FRQ Q4（沿抛物线运动），Unit 1 最难的题型",""],["做自测题 1–2，确认会分离变量和 a = v dv/dx",""],["相对速度：重做 MCQ Q19，再找一道过河题",""]]},
+ {day:"11/2 周一 · 力与 FBD",today:true,items:[["重做 F&FBD Quiz 全卷，每题说出每个力的施力者",""],["用符号推导一遍「标准模型」表里的每一行，并做极限检验",""],["改正 w8 Q5 和 Q7",""],["做自测题 5–7",""]]},
+ {day:"11/3 周二 · 混合模拟",items:[["做自测题 3–4（阻力、变力），先问老师阻力是否在范围内",""],["限时 45 分钟：Progress Check MCQ 全卷",""],["整理第一次月考丢的 5 分",""],["睡前过一遍速查，不再做新题",""]]}
+]
+};
 /* ===================== RENDER ===================== */
 const SUBJ={
  chem:{scope:CHEM.scope,tabs:[{k:"mistakes",l:"错题陷阱",html:CHEM.mistakes},{k:"ref",l:"速查",html:CHEM.ref},{k:"quiz",l:"自测",quiz:CHEM.quiz,
@@ -1046,6 +1276,9 @@ const SUBJ={
  hist:{scope:HIST.scope,tabs:[{k:"saq",l:"SAQ 方法",html:HIST.saq},{k:"ref",l:"速查",html:HIST.ref},{k:"evidence",l:"证据库",html:HIST.evidence},{k:"compare",l:"对比",html:HIST.compare},
    {k:"quiz",l:"年代自测",quiz:HIST.dates.map(([d,e])=>[`<b>${d}</b> 发生了什么？`,e]),sub:"看年份说出事件，再点「看答案」核对。Previous-knowledge MCQ 主要考这些。"},
    {k:"plan",l:"SAQ 口头练习",plan:[{day:"用 TEA 大声说一遍，每题说完打勾",items:HIST.prompts.map(p=>[p,""])}],foot:"每题检查：在年代范围内？有专有名词？说了 because / which led to？重复了题目关键动词？例子去「证据库」找。"}]},
+ eng:{scope:ENG.scope,tabs:[{k:"voice",l:"要求 & Voice",html:ENG.voice},{k:"draft",l:"草稿修改",html:ENG.draft},{k:"structure",l:"结构 & 故事",html:ENG.structure},
+   {k:"plan",l:"交卷清单",plan:[{day:"交卷前逐条检查",items:ENG.check.map(x=>[x,""])}],foot:"每写完一篇练习就逐条过一遍；检查下一篇前把勾取消就行。"}]},
+ phys:{scope:PHYS.scope,tabs:[{k:"mistakes",l:"易错点",html:PHYS.mistakes},{k:"ref",l:"速查",html:PHYS.ref},{k:"quiz",l:"自测",quiz:PHYS.quiz,sub:"AP C 常考、但你作业里没出现过的 7 道延伸题。全部用符号作答。"},{k:"plan",l:"计划",plan:PHYS.plan,foot:"11/4 考试，考场 412（平时在 413）。"}]},
  csa:{scope:CSA.scope,tabs:[{k:"mistakes",l:"错题陷阱",html:CSA.mistakes},{k:"ref",l:"速查",html:CSA.ref},{k:"quiz",l:"自测",quiz:CSA.quiz,sub:"先遮住答案，在纸上画变量表。答案已用 Java 实际运行核对过（来自复习资料）。"}]},
  bc:{scope:BC.scope,tabs:[{k:"mistakes",l:"易错点",html:BC.mistakes},{k:"ref",l:"速查",html:BC.ref},{k:"mcq",l:"模拟考 · 选择",mcq:BC.mcq},{k:"frq",l:"模拟考 · FRQ",frq:BC.frq}]}
 };
@@ -1075,7 +1308,7 @@ function render(){
  <div class="progress" title="完成进度"><i style="width:${pr.tot?pr.done/pr.tot*100:0}%"></i></div>
  <div class="tabs" role="tablist">${S.tabs.map(t=>`<button class="tab" role="tab" data-tab="${t.k}" aria-selected="${t.k===tab}">${t.l}${t.quiz?`<span class="n">${t.quiz.length}</span>`:""}${t.mcq?`<span class="n">${t.mcq.length}</span>`:""}</button>`).join("")}</div>
  <section class="panel" id="panel"></section>`;
- renderPanel(tab);
+ renderPanel(tab);typeset(desk.querySelector(".scope"));
 }
 function curTab(){const S=SUBJ[cur];const k=store.get("tab:"+cur,S.tabs[0].k);return S.tabs.find(t=>t.k===k)||S.tabs[0]}
 function renderPanel(k){
@@ -1085,8 +1318,10 @@ function renderPanel(k){
  else if(t.plan)renderPlan(el,t);
  else if(t.mcq)renderMCQ(el,t);
  else if(t.frq)renderFRQ(el,t);
+ el.querySelectorAll("[data-save]").forEach(t=>{t.value=store.get("txt:"+t.dataset.save,"")});
  typeset(el);
 }
+document.addEventListener("input",ev=>{const k=ev.target.dataset?.save;if(k)store.set("txt:"+k,ev.target.value)});
 function updBar(){const b=document.querySelector(".progress i");if(b){const p=progress(cur);b.style.width=(p.tot?p.done/p.tot*100:0)+"%"}}
 
 /* self-test */
